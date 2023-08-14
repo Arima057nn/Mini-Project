@@ -55,6 +55,10 @@
 
                         print('<p>New post was added successfully.</p>');
 
+                        // Return to dashboard and update index() method
+                        header("Location: http://localhost:3000/views/dashboard.php");
+                        die();
+
                     } catch(mysqli_sql_exception $e) {
                         print('<p>Error with database: ' . $e . '</p>');
                     }
