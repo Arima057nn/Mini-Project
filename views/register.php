@@ -1,6 +1,6 @@
 <?php
-@include '../includes/config.php';
-@include '../controllers/AuthController.php';
+
+require_once '../controllers/AuthController.php';
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

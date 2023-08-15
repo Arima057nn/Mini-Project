@@ -1,7 +1,7 @@
 <?php
 
-@include '../includes/config.php';
-@include '../controllers/AuthController.php';
+require_once '../controllers/AuthController.php';
+
 session_start();
 
 $authController = new AuthController($conn);

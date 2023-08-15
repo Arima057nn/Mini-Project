@@ -1,8 +1,11 @@
 <?php
-@include '../includes/config.php';
-@include '../controllers/AuthController.php';
+require_once '../controllers/AuthController.php';
 
 session_start();
+
+if (isset($_SESSION['user_success'])) {
+    header('location:home.php');
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Lấy dữ liệu từ biểu mẫu
