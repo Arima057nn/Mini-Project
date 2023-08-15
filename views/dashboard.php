@@ -143,9 +143,9 @@
                 <td><?php print $post['salary']; ?></td>
                 <td><?php print $post['address']; ?></td>   
                 <td><?php print $post['phone']; ?></td>
-                <td><button class="js-buy-ticket2"><i class="ti-pencil"></i> Update <?php print $post['id']; ?></button></td>
+                <td><button class="js-buy-ticket2" id="<?php print $post['id']; ?>" ><i class="ti-pencil"></i> Update <?php print $post['id']; ?></button></td>
                 
-                <div class="nodal js-nodal">
+                <div class="nodal js-nodal" id="<?php print $post['id']; ?>">
                     <div class="nodal-container js-nodal-container">
                         
                         <form action="" method="post">
@@ -190,47 +190,41 @@
                 </div>
             </tr>
         <?php } ?>
-        
-        <!-- <?php $posts3 = $postController->indexPostN("PT0003"); ?>
-        <?php while($post3 = $posts3->fetch_assoc()) { ?>
-            <tr>
-                <td><?php print $post3['title']; ?></td>
-                <td><?php print $post3['level']; ?></td>
-                <td><?php print $post3['experience']; ?></td>
-                <td><?php print $post3['target']; ?></td>
-                <td><?php print $post3['salary']; ?></td>
-                <td><?php print $post3['address']; ?></td>
-                <td><?php print $post3['phone']; ?></td>
-            </tr>
-        <?php } ?> -->
 
     </table>
 
     <script>
         const buyBtns2 = document.querySelectorAll('.js-buy-ticket2')
-        const nodal = document.querySelector('.js-nodal')
         const nodalContainer = document.querySelector('.js-nodal-container')
         const nodalClose = document.querySelector('.js-nodal-close')
 
         // Hàm hiển thị nodal mua vé (thêm class open vào nodal)
-        function showBuyTickets() {
-            nodal.classList.add('open')
+        function showBuyTickets(PostId) {
+            const nodal = document.querySelectorAll('.js-nodal#' + PostId);
+            console.log(nodal);
+            nodal[0].classList.add('open');
         }
 
         // Hàm ẩn nodal mua vé (gỡ bỏ class open vào nodal)
         function hideBuyTickets() {
-            nodal.classList.remove('open')
+            const nodal = document.querySelectorAll('.ti-close');
+            console.log(nodal);
+            nodal[0].classList.remove('open');
         }
 
         // Lặp qua từng thẻ button và nghe hành vi click
         for (const buyBtn2 of buyBtns2) {
-            buyBtn2.addEventListener('click', showBuyTickets);
+            buyBtn2.addEventListener('click', () => {
+                const PostId = buyBtn2.getAttribute('id');
+                console.log(PostId);
+                showBuyTickets(PostId);
+            });
         }
 
         // nghe hành vi click vào nút button close
-        nodalClose.addEventListener('click', hideBuyTickets);
+        nodalClose.addEventListener('click', hideBuyTickets());
 
-        nodal.addEventListener('click', hideBuyTickets);
+        // nodal.addEventListener('click', hideBuyTickets);
 
         nodalContainer.addEventListener('click', function (event) {
             event.stopPropagation();
