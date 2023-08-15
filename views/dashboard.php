@@ -195,21 +195,24 @@
 
     <script>
         const buyBtns2 = document.querySelectorAll('.js-buy-ticket2')
+        const nodal = document.querySelector('.js-nodal')
+        console.log(nodal)
         const nodalContainer = document.querySelector('.js-nodal-container')
         const nodalClose = document.querySelector('.js-nodal-close')
+        const ti_close = document.querySelector('.ti-close')
 
         // Hàm hiển thị nodal mua vé (thêm class open vào nodal)
         function showBuyTickets(PostId) {
-            const nodal = document.querySelectorAll('.js-nodal#' + PostId);
-            console.log(nodal);
-            nodal[0].classList.add('open');
+            const nodalUpdate = document.querySelectorAll('.js-nodal#' + PostId);
+            // console.log(nodalUpdate);
+            nodalUpdate[0].classList.add('open');
         }
 
         // Hàm ẩn nodal mua vé (gỡ bỏ class open vào nodal)
         function hideBuyTickets() {
-            const nodal = document.querySelectorAll('.ti-close');
+            console.log("abc");
             console.log(nodal);
-            nodal[0].classList.remove('open');
+            nodal.classList.remove('open');
         }
 
         // Lặp qua từng thẻ button và nghe hành vi click
@@ -222,9 +225,18 @@
         }
 
         // nghe hành vi click vào nút button close
-        nodalClose.addEventListener('click', hideBuyTickets());
+        console.log(nodalClose, "RunRun");
+        console.log(ti_close);
+        nodalClose.addEventListener('click', () => {
+            console.log("123");
+            console.log(nodal);
+            hideBuyTickets();
+        });
 
-        // nodal.addEventListener('click', hideBuyTickets);
+        nodal.addEventListener('click', (event) => {
+            console.log(event);
+            hideBuyTickets();
+        });
 
         nodalContainer.addEventListener('click', function (event) {
             event.stopPropagation();
