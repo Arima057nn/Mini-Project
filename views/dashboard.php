@@ -150,7 +150,7 @@
                         
                         <form action="" method="post">
                             <div class="nodal-close js-nodal-close">
-                                <i class="ti-close"></i>
+                                <i class="ti-close" id="<?php print $post['id']; ?>" ></i>
                             </div>
 
                             <header class="nodal-header">
@@ -206,13 +206,11 @@
             const nodalUpdate = document.querySelectorAll('.js-nodal#' + PostId);
             // console.log(nodalUpdate);
             nodalUpdate[0].classList.add('open');
-        }
-
-        // Hàm ẩn nodal mua vé (gỡ bỏ class open vào nodal)
-        function hideBuyTickets() {
-            console.log("abc");
-            console.log(nodal);
-            nodal.classList.remove('open');
+            // Hàm ẩn nodal mua vé (gỡ bỏ class open vào nodal)
+            const nodalDelete = document.querySelector('.ti-close#' + PostId);
+            nodalDelete.addEventListener('click', () => {
+                nodalUpdate[0].classList.remove("open");
+            });
         }
 
         // Lặp qua từng thẻ button và nghe hành vi click
@@ -223,24 +221,6 @@
                 showBuyTickets(PostId);
             });
         }
-
-        // nghe hành vi click vào nút button close
-        console.log(nodalClose, "RunRun");
-        console.log(ti_close);
-        nodalClose.addEventListener('click', () => {
-            console.log("123");
-            console.log(nodal);
-            hideBuyTickets();
-        });
-
-        nodal.addEventListener('click', (event) => {
-            console.log(event);
-            hideBuyTickets();
-        });
-
-        nodalContainer.addEventListener('click', function (event) {
-            event.stopPropagation();
-        });
     </script>
 </body>
 </html>
