@@ -13,6 +13,11 @@
             return $posts;
         }
 
+        public function indexPostN(string $id) {
+            $posts = $this->postModel->getPostN($id);
+            return $posts;
+        }
+
         public function create(string $submitted, string $title, string $level, string $experience, string $target, string $salary, string $address, string $phone) {
             $posts = $this->postModel->createPost($submitted, $title, $level, $experience, $target, $salary, $address, $phone);
             return $posts;

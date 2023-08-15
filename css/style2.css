@@ -237,3 +237,81 @@ i.ti-close {
         transform: translateY(0);
     }
 }
+
+/* Nodal */
+.nodal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+.nodal.open {
+    display: flex;
+}
+
+.nodal-container {
+    background: #fff;
+    width: 900px;
+    max-width: calc(100% - 32px);
+    min-height: 200px;
+    position: relative;
+    animation: nodalFadeIn ease .5s;
+}
+
+.nodal-header {
+    background: #009688;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: #fff;
+}
+
+.nodal-heading-icon {
+    margin-right: 16px;
+}
+
+.nodal-body {
+    padding: 16px;
+}
+
+.nodal-label {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+.nodal-input {
+    border: 1px solid #ccc;
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    margin-bottom: 24px;
+}
+
+.nodal-footer {
+    padding: 16px;
+    text-align: right;
+}
+
+.nodal-footer a {
+    color: #2196f3;
+}
+
+@keyframes nodalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-140px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

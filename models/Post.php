@@ -12,6 +12,16 @@
             return $result;
         }
 
+        public function getPostN(string $id) {
+            $sql = "SELECT * FROM Posts WHERE id = \"$id\"";
+            $result = $this->conn->query($sql);
+            if (!$result) {
+                throw new Exception("Database Error [{$this->conn->errno}] {$this->conn->error}");
+            }
+            // var_dump($result);
+            return $result;
+        }
+
         public function createPost(string $submitted, string $title, string $level, string $experience, string $target, string $salary, string $address, string $phone) {
             $_POST['submitted'] = $submitted;
             $_POST['title'] = $title;

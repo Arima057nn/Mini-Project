@@ -6,6 +6,7 @@
     $posts = $postController->index();
     // var_dump($posts);
 
+    $_POST['submitted2'] = $_POST['submitted2'] ?? 0;
     $_POST['submitted'] = $_POST['submitted'] ?? 0;
     $_POST['title'] = $_POST['title'] ?? 0;
     $_POST['level'] = $_POST['level'] ?? 0;
@@ -110,18 +111,130 @@
             <th>salary</th>
             <th>address</th>
             <th>phone</th>
+            <th>update</th>
         </tr>
-        <?php while($post = $posts->fetch_assoc()) { ?>
+        <?php
+            // for ($set = array (); $row = $posts->fetch_assoc(); $set[] = $row);
+            // {
+            //     print_r($set);
+            // }
+        ?>
+        <?php
+
+        foreach($posts as $post) { ?>
             <tr>
+                <?php 
+                    $_POST['title'] = $post['title'];
+                    $_POST['level'] = $post['level'];
+                    $_POST['experience'] = $post['experience'];
+                    $_POST['target'] = $post['target'];
+                    $_POST['salary'] = $post['salary'];
+                    $_POST['address'] = $post['address'];
+                    $_POST['phone'] = $post['phone'];
+                    // var_dump($post);
+                    // dd($posts);
+                    // var_dump(strlen($post['title']));
+                    // var_dump(count($post));
+                ?>
                 <td><?php print $post['title']; ?></td>
                 <td><?php print $post['level']; ?></td>
                 <td><?php print $post['experience']; ?></td>
                 <td><?php print $post['target']; ?></td>
                 <td><?php print $post['salary']; ?></td>
-                <td><?php print $post['address']; ?></td>
+                <td><?php print $post['address']; ?></td>   
                 <td><?php print $post['phone']; ?></td>
+                <td><button class="js-buy-ticket2"><i class="ti-pencil"></i> Update <?php print $post['id']; ?></button></td>
+                
+                <div class="nodal js-nodal">
+                    <div class="nodal-container js-nodal-container">
+                        
+                        <form action="" method="post">
+                            <div class="nodal-close js-nodal-close">
+                                <i class="ti-close"></i>
+                            </div>
+
+                            <header class="nodal-header">
+                                Update Post
+                            </header>
+
+                            <div class="nodal-body">
+                                <input type="hidden" name="submitted2" value="1">
+
+                                Title
+                                <input type="text" class="nodal-input" name="title" value="<?= @ htmlentities($_POST['title']) ?>" placeholder="Enter Title...">
+
+                                Level
+                                <input type="text" class="nodal-input" name="level" value="<?= @ htmlentities($_POST['level']) ?>" placeholder="Enter Level...">
+
+                                Experience
+                                <input type="text" class="nodal-input" name="experience" value="<?= @ htmlentities($_POST['experience']) ?>" placeholder="Enter Experience...">
+
+                                Target
+                                <input type="text" class="nodal-input" name="target" value="<?= @ htmlentities($_POST['target']) ?>" placeholder="Enter Target...">
+
+                                Salary
+                                <input type="text" class="nodal-input" name="salary" value="<?= @ htmlentities($_POST['salary']) ?>" placeholder="Enter Salary...">
+
+                                Address
+                                <input type="text" class="nodal-input" name="address" value="<?= @ htmlentities($_POST['address']) ?>" placeholder="Enter Address...">
+
+                                Phone
+                                <input type="text" class="nodal-input" name="phone" value="<?= @ htmlentities($_POST['phone']) ?>" placeholder="Enter Phone...">
+
+                                <button id="buy-tickets" type="submit">
+                                    Update Post <i class="ti-check"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </tr>
         <?php } ?>
+        
+        <!-- <?php $posts3 = $postController->indexPostN("PT0003"); ?>
+        <?php while($post3 = $posts3->fetch_assoc()) { ?>
+            <tr>
+                <td><?php print $post3['title']; ?></td>
+                <td><?php print $post3['level']; ?></td>
+                <td><?php print $post3['experience']; ?></td>
+                <td><?php print $post3['target']; ?></td>
+                <td><?php print $post3['salary']; ?></td>
+                <td><?php print $post3['address']; ?></td>
+                <td><?php print $post3['phone']; ?></td>
+            </tr>
+        <?php } ?> -->
+
     </table>
+
+    <script>
+        const buyBtns2 = document.querySelectorAll('.js-buy-ticket2')
+        const nodal = document.querySelector('.js-nodal')
+        const nodalContainer = document.querySelector('.js-nodal-container')
+        const nodalClose = document.querySelector('.js-nodal-close')
+
+        // Hàm hiển thị nodal mua vé (thêm class open vào nodal)
+        function showBuyTickets() {
+            nodal.classList.add('open')
+        }
+
+        // Hàm ẩn nodal mua vé (gỡ bỏ class open vào nodal)
+        function hideBuyTickets() {
+            nodal.classList.remove('open')
+        }
+
+        // Lặp qua từng thẻ button và nghe hành vi click
+        for (const buyBtn2 of buyBtns2) {
+            buyBtn2.addEventListener('click', showBuyTickets);
+        }
+
+        // nghe hành vi click vào nút button close
+        nodalClose.addEventListener('click', hideBuyTickets);
+
+        nodal.addEventListener('click', hideBuyTickets);
+
+        nodalContainer.addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+    </script>
 </body>
 </html>
