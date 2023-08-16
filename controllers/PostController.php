@@ -23,6 +23,11 @@
             return $posts;
         }
 
+        public function deletePost(string $id) {
+            $this->postModel->deletePost($id);
+        }
+        
+
         // Thêm các phương thức CRUD khác tương tự
     }
 ?>

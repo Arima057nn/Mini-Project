@@ -77,6 +77,22 @@
             }
         }
 
+        public function deletePost(string $id) {
+            $sql = "DELETE FROM Posts WHERE id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param('s', $id);
+            try {
+                $stmt->execute();
+                print('<p>Post was deleted successfully.</p>');
+                header("Location: http://localhost/Mini-Project/views/dashboard.php");
+                die();
+            } catch (mysqli_sql_exception $e) {
+                print('<p>Error with database: ' . $e->getMessage() . '</p>');
+            }
+        }
+        
+        
+
         // Thêm các phương thức CRUD khác tương tự
     }
 ?>

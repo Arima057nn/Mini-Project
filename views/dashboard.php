@@ -1,28 +1,40 @@
 <?php
-    session_start();
-    require_once '../controllers/PostController.php';
+session_start();
+require_once '../controllers/PostController.php';
 
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['id'])) {
     $postController = new PostController();
-    $posts = $postController->index();
-    // var_dump($posts);
+    $postController->deletePost($_GET['id']);
 
-    $_POST['submitted2'] = $_POST['submitted2'] ?? 0;
-    $_POST['submitted'] = $_POST['submitted'] ?? 0;
-    $_POST['title'] = $_POST['title'] ?? 0;
-    $_POST['level'] = $_POST['level'] ?? 0;
-    $_POST['experience'] = $_POST['experience'] ?? 0;
-    $_POST['target'] = $_POST['target'] ?? 0;
-    $_POST['salary'] = $_POST['salary'] ?? 0;
-    $_POST['address'] = $_POST['address'] ?? 0;
-    $_POST['phone'] = $_POST['phone'] ?? 0;
+    $response = array('message' => 'Post deleted successfully.');
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit;
+}
+$postController = new PostController();
+$posts = $postController->index();
+// var_dump($posts);
+
+$_POST['submitted2'] = $_POST['submitted2'] ?? 0;
+$_POST['submitted'] = $_POST['submitted'] ?? 0;
+$_POST['title'] = $_POST['title'] ?? 0;
+$_POST['level'] = $_POST['level'] ?? 0;
+$_POST['experience'] = $_POST['experience'] ?? 0;
+$_POST['target'] = $_POST['target'] ?? 0;
+$_POST['salary'] = $_POST['salary'] ?? 0;
+$_POST['address'] = $_POST['address'] ?? 0;
+$_POST['phone'] = $_POST['phone'] ?? 0;
+
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Dashboard</title>
     <link rel="stylesheet" href="../css/style2.css">
     <link rel="stylesheet" href="../css/themify-icons/themify-icons.css">
 </head>
+
 <body>
     <h1>Danh sách bài viết</h1>
 
@@ -43,25 +55,25 @@
                     <input type="hidden" name="submitted" value="1">
 
                     Title
-                    <input type="text" class="modal-input" name="title" value="<?= @ htmlentities($_POST['title']) ?>" placeholder="Enter Title...">
+                    <input type="text" class="modal-input" name="title" value="<?= @htmlentities($_POST['title']) ?>" placeholder="Enter Title...">
 
                     Level
-                    <input type="text" class="modal-input" name="level" value="<?= @ htmlentities($_POST['level']) ?>" placeholder="Enter Level...">
+                    <input type="text" class="modal-input" name="level" value="<?= @htmlentities($_POST['level']) ?>" placeholder="Enter Level...">
 
                     Experience
-                    <input type="text" class="modal-input" name="experience" value="<?= @ htmlentities($_POST['experience']) ?>" placeholder="Enter Experience...">
+                    <input type="text" class="modal-input" name="experience" value="<?= @htmlentities($_POST['experience']) ?>" placeholder="Enter Experience...">
 
                     Target
-                    <input type="text" class="modal-input" name="target" value="<?= @ htmlentities($_POST['target']) ?>" placeholder="Enter Target...">
+                    <input type="text" class="modal-input" name="target" value="<?= @htmlentities($_POST['target']) ?>" placeholder="Enter Target...">
 
                     Salary
-                    <input type="text" class="modal-input" name="salary" value="<?= @ htmlentities($_POST['salary']) ?>" placeholder="Enter Salary...">
+                    <input type="text" class="modal-input" name="salary" value="<?= @htmlentities($_POST['salary']) ?>" placeholder="Enter Salary...">
 
                     Address
-                    <input type="text" class="modal-input" name="address" value="<?= @ htmlentities($_POST['address']) ?>" placeholder="Enter Address...">
+                    <input type="text" class="modal-input" name="address" value="<?= @htmlentities($_POST['address']) ?>" placeholder="Enter Address...">
 
                     Phone
-                    <input type="text" class="modal-input" name="phone" value="<?= @ htmlentities($_POST['phone']) ?>" placeholder="Enter Phone...">
+                    <input type="text" class="modal-input" name="phone" value="<?= @htmlentities($_POST['phone']) ?>" placeholder="Enter Phone...">
 
                     <button id="buy-tickets" type="submit">
                         Create Post <i class="ti-check"></i>
@@ -97,7 +109,7 @@
 
         modal.addEventListener('click', hideBuyTickets);
 
-        modalContainer.addEventListener('click', function (event) {
+        modalContainer.addEventListener('click', function(event) {
             event.stopPropagation();
         });
     </script>
@@ -114,43 +126,48 @@
             <th>update</th>
         </tr>
         <?php
-            // for ($set = array (); $row = $posts->fetch_assoc(); $set[] = $row);
-            // {
-            //     print_r($set);
-            // }
+        // for ($set = array (); $row = $posts->fetch_assoc(); $set[] = $row);
+        // {
+        //     print_r($set);
+        // }
         ?>
         <?php
 
-        foreach($posts as $post) { ?>
+        foreach ($posts as $post) { ?>
             <tr>
-                <?php 
-                    $_POST['title'] = $post['title'];
-                    $_POST['level'] = $post['level'];
-                    $_POST['experience'] = $post['experience'];
-                    $_POST['target'] = $post['target'];
-                    $_POST['salary'] = $post['salary'];
-                    $_POST['address'] = $post['address'];
-                    $_POST['phone'] = $post['phone'];
-                    // var_dump($post);
-                    // dd($posts);
-                    // var_dump(strlen($post['title']));
-                    // var_dump(count($post));
+                <?php
+                $_POST['title'] = $post['title'];
+                $_POST['level'] = $post['level'];
+                $_POST['experience'] = $post['experience'];
+                $_POST['target'] = $post['target'];
+                $_POST['salary'] = $post['salary'];
+                $_POST['address'] = $post['address'];
+                $_POST['phone'] = $post['phone'];
+                // var_dump($post);
+                // dd($posts);
+                // var_dump(strlen($post['title']));
+                // var_dump(count($post));
                 ?>
                 <td><?php print $post['title']; ?></td>
                 <td><?php print $post['level']; ?></td>
                 <td><?php print $post['experience']; ?></td>
                 <td><?php print $post['target']; ?></td>
                 <td><?php print $post['salary']; ?></td>
-                <td><?php print $post['address']; ?></td>   
+                <td><?php print $post['address']; ?></td>
                 <td><?php print $post['phone']; ?></td>
-                <td><button class="js-buy-ticket2" id="<?php print $post['id']; ?>" ><i class="ti-pencil"></i> Update <?php print $post['id']; ?></button></td>
-                
+                <td><button class="js-buy-ticket2" id="<?php print $post['id']; ?>"><i class="ti-pencil"></i> Update <?php print $post['id']; ?></button></td>
+                <td>
+                    <button type="button" class="js-delete-post" data-post-id="<?= $post['id'] ?>">
+                        <i class="ti-trash"></i> Delete
+                    </button>
+                </td>
+
                 <div class="nodal js-nodal" id="<?php print $post['id']; ?>">
                     <div class="nodal-container js-nodal-container">
-                        
+
                         <form action="" method="post">
                             <div class="nodal-close js-nodal-close">
-                                <i class="ti-close" id="<?php print $post['id']; ?>" ></i>
+                                <i class="ti-close" id="<?php print $post['id']; ?>"></i>
                             </div>
 
                             <header class="nodal-header">
@@ -161,25 +178,25 @@
                                 <input type="hidden" name="submitted2" value="1">
 
                                 Title
-                                <input type="text" class="nodal-input" name="title" value="<?= @ htmlentities($_POST['title']) ?>" placeholder="Enter Title...">
+                                <input type="text" class="nodal-input" name="title" value="<?= @htmlentities($_POST['title']) ?>" placeholder="Enter Title...">
 
                                 Level
-                                <input type="text" class="nodal-input" name="level" value="<?= @ htmlentities($_POST['level']) ?>" placeholder="Enter Level...">
+                                <input type="text" class="nodal-input" name="level" value="<?= @htmlentities($_POST['level']) ?>" placeholder="Enter Level...">
 
                                 Experience
-                                <input type="text" class="nodal-input" name="experience" value="<?= @ htmlentities($_POST['experience']) ?>" placeholder="Enter Experience...">
+                                <input type="text" class="nodal-input" name="experience" value="<?= @htmlentities($_POST['experience']) ?>" placeholder="Enter Experience...">
 
                                 Target
-                                <input type="text" class="nodal-input" name="target" value="<?= @ htmlentities($_POST['target']) ?>" placeholder="Enter Target...">
+                                <input type="text" class="nodal-input" name="target" value="<?= @htmlentities($_POST['target']) ?>" placeholder="Enter Target...">
 
                                 Salary
-                                <input type="text" class="nodal-input" name="salary" value="<?= @ htmlentities($_POST['salary']) ?>" placeholder="Enter Salary...">
+                                <input type="text" class="nodal-input" name="salary" value="<?= @htmlentities($_POST['salary']) ?>" placeholder="Enter Salary...">
 
                                 Address
-                                <input type="text" class="nodal-input" name="address" value="<?= @ htmlentities($_POST['address']) ?>" placeholder="Enter Address...">
+                                <input type="text" class="nodal-input" name="address" value="<?= @htmlentities($_POST['address']) ?>" placeholder="Enter Address...">
 
                                 Phone
-                                <input type="text" class="nodal-input" name="phone" value="<?= @ htmlentities($_POST['phone']) ?>" placeholder="Enter Phone...">
+                                <input type="text" class="nodal-input" name="phone" value="<?= @htmlentities($_POST['phone']) ?>" placeholder="Enter Phone...">
 
                                 <button id="buy-tickets" type="submit">
                                     Update Post <i class="ti-check"></i>
@@ -222,5 +239,31 @@
             });
         }
     </script>
+    <script>
+        const deleteBtns = document.querySelectorAll('.js-delete-post');
+
+        function deletePost(postId) {
+            if (confirm("Are you sure you want to delete this post?")) {
+                fetch(`?id=${postId}`, {
+                        method: 'DELETE'
+                    }).then(response => response.json())
+                    .then(data => {
+                        console.log(data.message);
+                        window.location.reload();
+                    })
+                    .catch(error => console.error(error));
+            }
+        }
+        for (const deleteBtn of deleteBtns) {
+            deleteBtn.addEventListener('click', () => {
+                const postId = deleteBtn.getAttribute('data-post-id');
+                deletePost(postId);
+            });
+        }
+    </script>
+
+
+
 </body>
+
 </html>
