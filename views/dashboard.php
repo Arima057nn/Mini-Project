@@ -1,20 +1,21 @@
 <?php
-    session_start();
     require_once '../controllers/PostController.php';
 
+    $postC = new PostController();
     $postController = new PostController();
     $posts = $postController->index();
     // var_dump($posts);
 
     $_POST['submitted2'] = $_POST['submitted2'] ?? 0;
     $_POST['submitted'] = $_POST['submitted'] ?? 0;
-    $_POST['title'] = $_POST['title'] ?? 0;
-    $_POST['level'] = $_POST['level'] ?? 0;
-    $_POST['experience'] = $_POST['experience'] ?? 0;
-    $_POST['target'] = $_POST['target'] ?? 0;
-    $_POST['salary'] = $_POST['salary'] ?? 0;
-    $_POST['address'] = $_POST['address'] ?? 0;
-    $_POST['phone'] = $_POST['phone'] ?? 0;
+    $_POST['id'] = $_POST['id'] ?? "";
+    $_POST['title'] = $_POST['title'] ?? "";
+    $_POST['level'] = $_POST['level'] ?? "";
+    $_POST['experience'] = $_POST['experience'] ?? "";
+    $_POST['target'] = $_POST['target'] ?? "";
+    $_POST['salary'] = $_POST['salary'] ?? "";
+    $_POST['address'] = $_POST['address'] ?? "";
+    $_POST['phone'] = $_POST['phone'] ?? "";
 ?>
 <!DOCTYPE html>
 <html>
@@ -30,7 +31,7 @@
 
     <div class="modal js-modal">
         <div class="modal-container js-modal-container">
-            <form action="<?php $postController->create($_POST['submitted'], $_POST['title'], $_POST['level'], $_POST['experience'], $_POST['target'], $_POST['salary'], $_POST['address'], $_POST['phone']) ?>" method="post">
+            <form action="<?php $postController->create($_POST['submitted'], $_POST['title'], $_POST['level'], $_POST['experience'], $_POST['target'], $_POST['salary'], $_POST['address'], $_POST['phone']); ?>" method="post">
                 <div class="modal-close js-modal-close">
                     <i class="ti-close"></i>
                 </div>
@@ -123,18 +124,15 @@
 
         foreach($posts as $post) { ?>
             <tr>
-                <?php 
-                    $_POST['title'] = $post['title'];
-                    $_POST['level'] = $post['level'];
-                    $_POST['experience'] = $post['experience'];
-                    $_POST['target'] = $post['target'];
-                    $_POST['salary'] = $post['salary'];
-                    $_POST['address'] = $post['address'];
-                    $_POST['phone'] = $post['phone'];
-                    // var_dump($post);
-                    // dd($posts);
-                    // var_dump(strlen($post['title']));
-                    // var_dump(count($post));
+                <?php
+                    $id = $post['id'];
+                    $title = $post['title'];
+                    $level = $post['level'];
+                    $experience = $post['experience'];
+                    $target = $post['target'];
+                    $salary = $post['salary'];
+                    $address = $post['address'];
+                    $phone = $post['phone'];
                 ?>
                 <td><?php print $post['title']; ?></td>
                 <td><?php print $post['level']; ?></td>
@@ -148,7 +146,7 @@
                 <div class="nodal js-nodal" id="<?php print $post['id']; ?>">
                     <div class="nodal-container js-nodal-container">
                         
-                        <form action="" method="post">
+                        <form action="<?php $postC->update($_POST['submitted2'], $_POST['id'], $_POST['title'], $_POST['level'], $_POST['experience'], $_POST['target'], $_POST['salary'], $_POST['address'], $_POST['phone']); echo $_SERVER['PHP_SELF']; ?>" method="post">
                             <div class="nodal-close js-nodal-close">
                                 <i class="ti-close" id="<?php print $post['id']; ?>" ></i>
                             </div>
@@ -159,27 +157,28 @@
 
                             <div class="nodal-body">
                                 <input type="hidden" name="submitted2" value="1">
+                                <?php $_POST['id'] = $id ?>
 
                                 Title
-                                <input type="text" class="nodal-input" name="title" value="<?= @ htmlentities($_POST['title']) ?>" placeholder="Enter Title...">
+                                <input type="text" class="nodal-input" name="title" value="<?= @ htmlentities($title) ?>" placeholder="Enter Title...">
 
                                 Level
-                                <input type="text" class="nodal-input" name="level" value="<?= @ htmlentities($_POST['level']) ?>" placeholder="Enter Level...">
+                                <input type="text" class="nodal-input" name="level" value="<?= @ htmlentities($level) ?>" placeholder="Enter Level...">
 
                                 Experience
-                                <input type="text" class="nodal-input" name="experience" value="<?= @ htmlentities($_POST['experience']) ?>" placeholder="Enter Experience...">
+                                <input type="text" class="nodal-input" name="experience" value="<?= @ htmlentities($experience) ?>" placeholder="Enter Experience...">
 
                                 Target
-                                <input type="text" class="nodal-input" name="target" value="<?= @ htmlentities($_POST['target']) ?>" placeholder="Enter Target...">
+                                <input type="text" class="nodal-input" name="target" value="<?= @ htmlentities($target) ?>" placeholder="Enter Target...">
 
                                 Salary
-                                <input type="text" class="nodal-input" name="salary" value="<?= @ htmlentities($_POST['salary']) ?>" placeholder="Enter Salary...">
+                                <input type="text" class="nodal-input" name="salary" value="<?= @ htmlentities($salary) ?>" placeholder="Enter Salary...">
 
                                 Address
-                                <input type="text" class="nodal-input" name="address" value="<?= @ htmlentities($_POST['address']) ?>" placeholder="Enter Address...">
+                                <input type="text" class="nodal-input" name="address" value="<?= @ htmlentities($address) ?>" placeholder="Enter Address...">
 
                                 Phone
-                                <input type="text" class="nodal-input" name="phone" value="<?= @ htmlentities($_POST['phone']) ?>" placeholder="Enter Phone...">
+                                <input type="text" class="nodal-input" name="phone" value="<?= @ htmlentities($phone) ?>" placeholder="Enter Phone...">
 
                                 <button id="buy-tickets" type="submit">
                                     Update Post <i class="ti-check"></i>

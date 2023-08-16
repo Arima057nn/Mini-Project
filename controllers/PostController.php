@@ -23,6 +23,12 @@
             return $posts;
         }
 
+        public function update(string $submitted2, string $id, string $title, string $level, string $experience, string $target, string $salary, string $address, string $phone) {
+            $posts = $this->postModel->updatePostN($submitted2, $id, $title, $level, $experience, $target, $salary, $address, $phone);
+            // $posts = $this->postModel->getAllPosts();
+            return $posts;
+        }
+
         // Thêm các phương thức CRUD khác tương tự
     }
 ?>

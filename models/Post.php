@@ -77,6 +77,75 @@
             }
         }
 
+        public function updatePostN(string $submitted2, string $id, string $title, string $level, string $experience, string $target, string $salary, string $address, string $phone) {
+            $_POST['submitted2'] = $submitted2;
+            $_POST['id'] = $id;
+            $_POST['title'] = $title;
+            $_POST['level'] = $level;
+            $_POST['experience'] = $experience;
+            $_POST['target'] = $target;
+            $_POST['salary'] = $salary;
+            $_POST['address'] = $address;
+            $_POST['phone'] = $phone;
+
+            // var_dump($submitted2 . '\n');
+            // var_dump($id . '\n');
+            // var_dump($title . '\n');
+            // var_dump($level . '\n');
+            // var_dump($experience . '\n');
+            // var_dump($target . '\n');
+            // var_dump($salary . '\n');
+            // var_dump($address . '\n');
+            // var_dump($phone . '\n');
+
+            $submitted2 = isset($_POST['submitted2']) && $_POST['submitted2'] == 1;
+            if ($submitted2) {
+                $errors = [];
+
+                if (!isset($_POST['id']) || $_POST['id'] == null)
+                    $errors[] = 'id is not specified';
+                if (!isset($_POST['title']) || $_POST['title'] == null)
+                    $errors[] = 'title is not specified';
+                if (!isset($_POST['level']) || $_POST['level'] == null)
+                    $errors[] = 'level is not specified';
+                if (!isset($_POST['experience']) || $_POST['experience'] == null)
+                    $errors[] = 'experience is not specified';
+                if (!isset($_POST['target']) || $_POST['target'] == null)
+                    $errors[] = 'target is not specified';
+                if (!isset($_POST['salary']) || $_POST['salary'] == null)
+                    $errors[] = 'salary is not specified';
+                if (!isset($_POST['address']) || $_POST['address'] == null)
+                    $errors[] = 'address is not specified';
+                if (!isset($_POST['phone']) || $_POST['phone'] == null)
+                    $errors[] = 'phone is not specified';
+
+                if (count($errors) > 0) {
+                    print('<p>Errors:</p>' .
+                        implode(array_map(fn($e) => "<p>- $e</p>", $errors)));
+                } else {
+
+                    try {
+                        $query = "update Posts set title = ?, level = ?, experience = ?, target = ?, salary = ?, address = ?, phone = ? where id = ?";
+                        $stmt = $this->conn->prepare($query);
+
+                        // $stmt->bind_param('ssssssss', $_POST['title'], $_POST['level'], $_POST['experience'], $_POST['target'], $_POST['salary'], $_POST['address'], $_POST['phone'], $_POST['id']);
+                        $stmt->bind_param('ssssssss', $title, $level, $experience, $target, $salary, $address, $phone, $id);
+                        $stmt->execute();
+
+                        // print('<p>Table Posts was updated successfully.</p>');
+
+                        // Return to dashboard and update dashboard
+                        // header("Location: http://localhost:3000/views/dashboard.php");
+                        // die();
+
+                    } catch(mysqli_sql_exception $e) {
+                        print('<p>Error with database: ' . $e->getMessage() . '</p>');
+                    }
+
+                }
+            }
+        }
+
         // Thêm các phương thức CRUD khác tương tự
     }
 ?>
