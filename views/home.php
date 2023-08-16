@@ -32,7 +32,81 @@ $posts = $postController->getPosts("US0003");
 <body>
     <h1>Home</h1>
 
-    <button class="js-buy-ticket"><i class="ti-plus"></i> Create</button>
+    <button class="js-buy-ticket">Create</button>
+    <div class="modal js-modal">
+        <div class="modal-container js-modal-container">
+            <form action="../actions/create_post.php" method="POST">
+
+                <div class="modal-close js-modal-close">
+                    <i class="ti-close fas fa-close"></i>
+                </div>
+
+                <header class="modal-header">
+                    Create Post
+                </header>
+
+                <div class="modal-body">
+                    <input type="hidden" name="submitted" value="1">
+
+                    Title
+                    <input type="text" class="modal-input" name="title" value="" placeholder="Enter Title...">
+
+                    Level
+                    <input type="text" class="modal-input" name="level" value="" placeholder="Enter Level...">
+
+                    Experience
+                    <input type="text" class="modal-input" name="experience" value="" placeholder="Enter Experience...">
+
+                    Target
+                    <input type="text" class="modal-input" name="target" value="" placeholder="Enter Target...">
+
+                    Salary
+                    <input type="text" class="modal-input" name="salary" value="" placeholder="Enter Salary...">
+
+                    Address
+                    <input type="text" class="modal-input" name="address" value="" placeholder="Enter Address...">
+
+                    Phone
+                    <input type="text" class="modal-input" name="phone" value="" placeholder="Enter Phone...">
+
+                    <button id="buy-tickets" type="submit">
+                        Create Post <i class="fas fa-check"></i>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <script>
+        const buyBtn = document.querySelector('.js-buy-ticket')
+        const modal = document.querySelector('.js-modal')
+        const modalContainer = document.querySelector('.js-modal-container')
+        const modalClose = document.querySelector('.js-modal-close')
+
+        // Hàm hiển thị modal mua vé (thêm class open vào modal)
+        function showBuyTickets() {
+            modal.classList.add('open')
+        }
+
+        // Hàm ẩn modal mua vé (gỡ bỏ class open vào modal)
+        function hideBuyTickets() {
+            modal.classList.remove('open')
+        }
+
+
+
+        buyBtn.addEventListener('click', showBuyTickets);
+
+
+        // nghe hành vi click vào nút button close
+        modalClose.addEventListener('click', hideBuyTickets);
+
+        modal.addEventListener('click', hideBuyTickets);
+
+        modalContainer.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    </script>
     <div class="index">
         <div class="row">
             <p class="tittle">id</p>

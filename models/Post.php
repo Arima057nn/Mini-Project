@@ -26,6 +26,35 @@ class Post extends DB
             return $e->getMessage(); // Trả về thông báo lỗi cho người dùng
         }
     }
+
+    public function createPostByUser($title, $level, $experience, $target, $salary, $address, $phone, $userId)
+    {
+        try {
+            $insert = "INSERT INTO Posts (userId, title, level, experience, target, salary, address, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $this->conn->prepare($insert);
+
+            if (!$stmt) {
+                throw new Exception("Error preparing statement: " . $this->conn->error);
+            }
+
+            $stmt->bind_param("sssisiss", $userId, $title, $level, $experience, $target, $salary, $address, $phone);
+            $result = $stmt->execute();
+
+            if ($result) {
+                if ($stmt->affected_rows > 0) {
+                    return true;
+                } else {
+                    throw new Exception("No posts updated {$title} {$level} -{$userId}-");
+                }
+            } else {
+                throw new Exception("Error executing statement: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            return $e->getMessage(); // Trả về thông báo lỗi cho người dùng
+
+        }
+    }
+
     public function updatePostByUser($title, $level, $experience, $target, $salary, $address, $phone, $id)
     {
         try {

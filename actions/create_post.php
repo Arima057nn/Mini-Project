@@ -8,9 +8,7 @@ if (!isset($_SESSION['user_success'])) {
 $postController = new PostController($conn);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['submitted2']) && $_POST['submitted2'] == 1) {
-        $id = $_POST['postId']; // Đặt tên biến tùy theo tên bạn đã đặt trong form
-
+    if (isset($_POST['submitted']) && $_POST['submitted'] == 1) {
         $title = $_POST['title'];
         $level = $_POST['level'];
         $experience = $_POST['experience'];
@@ -18,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $salary = $_POST['salary'];
         $address = $_POST['address'];
         $phone = $_POST['phone'];
-        $result = $postController->updatePost($title, $level, $experience, $target, $salary, $address, $phone, $id);
-
+        $result = $postController->createPost($title, $level, $experience, $target, $salary, $address, $phone, "US0003");
+        // var_dump($result);
 
         // Sau khi cập nhật, bạn có thể chuyển hướng về trang chính hoặc thực hiện các hành động khác
         header('Location: http://localhost:80/Mini-Project/views/home.php');

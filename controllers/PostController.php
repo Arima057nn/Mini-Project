@@ -20,4 +20,9 @@ class PostController
     {
         return $this->postModel->updatePostByUser($title, $level, $experience, $target, $salary, $address, $phone, $id);
     }
+
+    public function createPost($title, $level, $experience, $target, $salary, $address, $phone, $userId)
+    {
+        return $this->postModel->createPostByUser($title, $level, $experience, $target, $salary, $address, $phone, $userId);
+    }
 }
