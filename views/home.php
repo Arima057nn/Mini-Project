@@ -1,10 +1,14 @@
 <?php
 
+require_once '../controllers/AuthController.php';
 session_start();
 
 if (!isset($_SESSION['user_success'])) {
     header('location:login.php');
 }
+
+
+
 
 ?>
 
