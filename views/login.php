@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $authController->loginUser($email, $password);
     if ($result === true) {
         header('location:home.php');
-        $_SESSION['user_success'] = "user";
+        $_SESSION['user_success'] = "US0001";
         exit;
     } else {
         $error = $result;
