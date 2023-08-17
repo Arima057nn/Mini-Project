@@ -38,9 +38,9 @@ $posts = $postController->getPosts("US0003");
 </head>
 
 <body>
-    <h1>Home</h1>
+    <h1 class = "page-tittle">Job Searching</h1>
 
-    <button class="js-buy-ticket">Create</button>
+    <button class="js-buy-ticket create-btn">Create +</button>
     <div class="modal js-modal">
         <div class="modal-container js-modal-container">
             <form action="../actions/create_post.php" method="POST">
@@ -116,34 +116,31 @@ $posts = $postController->getPosts("US0003");
         });
     </script>
     <div class="index">
-        <div class="row">
-            <p class="tittle">id</p>
-            <p class="tittle">title</p>
-            <p class="tittle">level</p>
-            <p class="tittle">experience</p>
-            <p class="tittle">target</p>
-            <p class="tittle">salary</p>
-            <p class="tittle">address</p>
-            <p class="tittle">phone</p>
-            <div>Update</div>
-
-        </div>
-
-        <?php foreach ($posts as $post) { ?>
-            <div class="row">
-                <p class="tittle"><?php echo $post['id']; ?></p>
-                <p class="tittle"><?php echo $post['title']; ?></p>
-                <p class="tittle"><?php echo $post['level']; ?></p>
-                <p class="tittle"><?php echo $post['experience']; ?></p>
-                <p class="tittle"><?php echo $post['target']; ?></p>
-                <p class="tittle"><?php echo $post['salary']; ?></p>
-                <p class="tittle"><?php echo $post['address']; ?></p>
-                <p class="tittle"><?php echo $post['phone']; ?></p>
-                <button class="js-buy-ticket2" data-postid="<?php echo $post['id']; ?>" id="<?php print $post['id']; ?>">Update</button>
-                <button type="button" class="js-delete-post" data-post-id="<?= $post['id'] ?>">
-                        <i class="ti-trash"></i> Delete
-                </button>
-            </div>
+        <table id="books">
+            <tr>
+                <th>id</th>
+                <th>title</th>
+                <th>level</th>
+                <th>experience</th>
+                <th>target</th>
+                <th>salary</th>
+                <th>address</th>
+                <th>phone</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <?php foreach ($posts as $post) { ?>
+            <tr>
+                <td class="tittle"><?php echo $post['id']; ?></td>
+                <td class="tittle"><?php echo $post['title']; ?></td>
+                <td class="tittle"><?php echo $post['level']; ?></td>
+                <td class="tittle"><?php echo $post['experience']; ?></td>
+                <td class="tittle"><?php echo $post['target']; ?></td>
+                <td class="tittle"><?php echo $post['salary']; ?></td>
+                <td class="tittle"><?php echo $post['address']; ?></td>
+                <td class="tittle"><?php echo $post['phone']; ?></td>
+                <td><button class="js-buy-ticket2 update-btn" data-postid="<?php echo $post['id']; ?>" id="<?php print $post['id']; ?>">Update</button> </td>
+                <td> <button type="button" class="js-delete-post delete-btn" data-post-id="<?= $post['id'] ?>"><i class="ti-trash"></i> Delete</button> </td>
 
             <div class="nodal js-nodal" id="nodal-<?php echo $post['id']; ?>">
                 <div class="nodal-container js-nodal-container">
@@ -192,12 +189,12 @@ $posts = $postController->getPosts("US0003");
                     </form>
                 </div>
             </div>
-
+            </tr>
         <?php } ?>
-
-
+ 
+        </table>
     </div>
-    <a href="logout.php">Logout !</a>
+    <a href="logout.php"><button class='btn-logout'>Log Out |-></button></a>
 
     <script>
         const buyBtns2 = document.querySelectorAll('.js-buy-ticket2')
