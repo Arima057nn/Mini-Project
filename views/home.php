@@ -7,7 +7,15 @@ session_start();
 if (!isset($_SESSION['user_success'])) {
     header('location:login.php');
 }
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['id'])) {
+    $postController = new PostController();
+    $postController->deletePost($_GET['id']);
 
+    $response = array('message' => 'Post deleted successfully.');
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit;
+}
 $postController = new PostController($conn);
 $posts = $postController->getPosts("US0003");
 // var_dump($posts);
@@ -132,6 +140,9 @@ $posts = $postController->getPosts("US0003");
                 <p class="tittle"><?php echo $post['address']; ?></p>
                 <p class="tittle"><?php echo $post['phone']; ?></p>
                 <button class="js-buy-ticket2" data-postid="<?php echo $post['id']; ?>" id="<?php print $post['id']; ?>">Update</button>
+                <button type="button" class="js-delete-post" data-post-id="<?= $post['id'] ?>">
+                        <i class="ti-trash"></i> Delete
+                </button>
             </div>
 
             <div class="nodal js-nodal" id="nodal-<?php echo $post['id']; ?>">
@@ -224,7 +235,28 @@ $posts = $postController->getPosts("US0003");
             });
         }
     </script>
+     <script>
+        const deleteBtns = document.querySelectorAll('.js-delete-post');
 
+        function deletePost(postId) {
+            if (confirm("Are you sure you want to delete this post?")) {
+                fetch(`?id=${postId}`, {
+                        method: 'DELETE'
+                    }).then(response => response.json())
+                    .then(data => {
+                        console.log(data.message);
+                        window.location.reload();
+                    })
+                    .catch(error => console.error(error));
+            }
+        }
+        for (const deleteBtn of deleteBtns) {
+            deleteBtn.addEventListener('click', () => {
+                const postId = deleteBtn.getAttribute('data-post-id');
+                deletePost(postId);
+            });
+        }
+    </script>
 
 </body>
 
