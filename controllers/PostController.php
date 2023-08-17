@@ -25,4 +25,10 @@ class PostController
     {
         return $this->postModel->createPostByUser($title, $level, $experience, $target, $salary, $address, $phone, $userId);
     }
+
+    public function deletePost(string $id) {
+        $this->postModel->deletePost($id);
+    }
+
+
 }
