@@ -7,15 +7,6 @@ session_start();
 if (!isset($_SESSION['user_success'])) {
     header('location:login.php');
 }
-if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['id'])) {
-    $postController = new PostController();
-    $postController->deletePost($_GET['id']);
-
-    $response = array('message' => 'Post deleted successfully.');
-    header('Content-Type: application/json');
-    echo json_encode($response);
-    exit;
-}
 $postController = new PostController($conn);
 $posts = $postController->getPosts("US0003");
 // var_dump($posts);
@@ -38,7 +29,7 @@ $posts = $postController->getPosts("US0003");
 </head>
 
 <body>
-    <h1 class = "page-tittle">Job Searching</h1>
+    <h1 class="page-tittle">Job Searching</h1>
 
     <button class="js-buy-ticket create-btn">Create +</button>
     <div class="modal js-modal">
@@ -130,68 +121,68 @@ $posts = $postController->getPosts("US0003");
                 <th></th>
             </tr>
             <?php foreach ($posts as $post) { ?>
-            <tr>
-                <td class="tittle"><?php echo $post['id']; ?></td>
-                <td class="tittle"><?php echo $post['title']; ?></td>
-                <td class="tittle"><?php echo $post['level']; ?></td>
-                <td class="tittle"><?php echo $post['experience']; ?></td>
-                <td class="tittle"><?php echo $post['target']; ?></td>
-                <td class="tittle"><?php echo $post['salary']; ?></td>
-                <td class="tittle"><?php echo $post['address']; ?></td>
-                <td class="tittle"><?php echo $post['phone']; ?></td>
-                <td><button class="js-buy-ticket2 update-btn" data-postid="<?php echo $post['id']; ?>" id="<?php print $post['id']; ?>">Update</button> </td>
-                <td> <button type="button" class="js-delete-post delete-btn" data-post-id="<?= $post['id'] ?>"><i class="ti-trash"></i> Delete</button> </td>
+                <tr>
+                    <td class="tittle"><?php echo $post['id']; ?></td>
+                    <td class="tittle"><?php echo $post['title']; ?></td>
+                    <td class="tittle"><?php echo $post['level']; ?></td>
+                    <td class="tittle"><?php echo $post['experience']; ?></td>
+                    <td class="tittle"><?php echo $post['target']; ?></td>
+                    <td class="tittle"><?php echo $post['salary']; ?></td>
+                    <td class="tittle"><?php echo $post['address']; ?></td>
+                    <td class="tittle"><?php echo $post['phone']; ?></td>
+                    <td><button class="js-buy-ticket2 update-btn" data-postid="<?php echo $post['id']; ?>" id="<?php print $post['id']; ?>">Update</button> </td>
+                    <td> <button type="button" class="js-delete-post delete-btn" data-post-id="<?= $post['id'] ?>"><i class="ti-trash"></i> Delete</button> </td>
 
-            <div class="nodal js-nodal" id="nodal-<?php echo $post['id']; ?>">
-                <div class="nodal-container js-nodal-container">
-                    <form action="../actions/update_post.php" method="POST">
-                        <div class="nodal-close js-nodal-close">
-                            <i class="ti-close fas fa-close" id="<?php print $post['id']; ?>"></i>
+                    <div class="nodal js-nodal" id="nodal-<?php echo $post['id']; ?>">
+                        <div class="nodal-container js-nodal-container">
+                            <form action="../actions/update_post.php" method="POST">
+                                <div class="nodal-close js-nodal-close">
+                                    <i class="ti-close fas fa-close" id="<?php print $post['id']; ?>"></i>
+                                </div>
+
+                                <header class="nodal-header">
+                                    Update Post
+                                </header>
+
+                                <div class="nodal-body">
+                                    <input type="hidden" name="submitted2" value="1">
+                                    <input type="hidden" name="postId" value="<?= htmlentities($post['id']) ?>">
+
+                                    ID
+                                    <input type="text" class="nodal-input" name="title" value="<?= htmlentities($post['id']) ?>" placeholder="Enter Id..." readonly>
+
+                                    Title
+                                    <input type="text" class="nodal-input" name="title" value="<?= htmlentities($post['title']) ?>" placeholder="Enter Title...">
+
+                                    Level
+                                    <input type="text" class="nodal-input" name="level" value="<?= htmlentities($post['level']) ?>" placeholder="Enter Level...">
+
+                                    Experience
+                                    <input type="text" class="nodal-input" name="experience" value="<?= htmlentities($post['experience']) ?>" placeholder="Enter Experience...">
+
+                                    Target
+                                    <input type="text" class="nodal-input" name="target" value="<?= htmlentities($post['target']) ?>" placeholder="Enter Target...">
+
+                                    Salary
+                                    <input type="text" class="nodal-input" name="salary" value="<?= htmlentities($post['salary']) ?>" placeholder="Enter Salary...">
+
+                                    Address
+                                    <input type="text" class="nodal-input" name="address" value="<?= htmlentities($post['address']) ?>" placeholder="Enter Address...">
+
+                                    Phone
+                                    <input type="text" class="nodal-input" name="phone" value="<?= htmlentities($post['phone']) ?>" placeholder="Enter Phone...">
+
+                                    <button id="buy-tickets" type="submit">
+                                        Update Post <i class="fas-check"></i>
+                                    </button>
+
+                                </div>
+                            </form>
                         </div>
+                    </div>
+                </tr>
+            <?php } ?>
 
-                        <header class="nodal-header">
-                            Update Post
-                        </header>
-
-                        <div class="nodal-body">
-                            <input type="hidden" name="submitted2" value="1">
-                            <input type="hidden" name="postId" value="<?= htmlentities($post['id']) ?>">
-
-                            ID
-                            <input type="text" class="nodal-input" name="title" value="<?= htmlentities($post['id']) ?>" placeholder="Enter Id..." readonly>
-
-                            Title
-                            <input type="text" class="nodal-input" name="title" value="<?= htmlentities($post['title']) ?>" placeholder="Enter Title...">
-
-                            Level
-                            <input type="text" class="nodal-input" name="level" value="<?= htmlentities($post['level']) ?>" placeholder="Enter Level...">
-
-                            Experience
-                            <input type="text" class="nodal-input" name="experience" value="<?= htmlentities($post['experience']) ?>" placeholder="Enter Experience...">
-
-                            Target
-                            <input type="text" class="nodal-input" name="target" value="<?= htmlentities($post['target']) ?>" placeholder="Enter Target...">
-
-                            Salary
-                            <input type="text" class="nodal-input" name="salary" value="<?= htmlentities($post['salary']) ?>" placeholder="Enter Salary...">
-
-                            Address
-                            <input type="text" class="nodal-input" name="address" value="<?= htmlentities($post['address']) ?>" placeholder="Enter Address...">
-
-                            Phone
-                            <input type="text" class="nodal-input" name="phone" value="<?= htmlentities($post['phone']) ?>" placeholder="Enter Phone...">
-
-                            <button id="buy-tickets" type="submit">
-                                Update Post <i class="fas-check"></i>
-                            </button>
-
-                        </div>
-                    </form>
-                </div>
-            </div>
-            </tr>
-        <?php } ?>
- 
         </table>
     </div>
     <a href="logout.php"><button class='btn-logout'>Log Out |-></button></a>
@@ -232,17 +223,17 @@ $posts = $postController->getPosts("US0003");
             });
         }
     </script>
-     <script>
+    <script>
         const deleteBtns = document.querySelectorAll('.js-delete-post');
 
         function deletePost(postId) {
             if (confirm("Are you sure you want to delete this post?")) {
-                fetch(`?id=${postId}`, {
+                fetch(`../actions/delete_post.php?id=${postId}`, {
                         method: 'DELETE'
-                    }).then(response => response.json())
-                    .then(data => {
-                        console.log(data.message);
-                        window.location.reload();
+                    }).then(response => {
+                        response.json();
+                        const deletedRow = document.querySelector(`[data-post-id="${postId}"]`).closest('tr');
+                        deletedRow.remove();
                     })
                     .catch(error => console.error(error));
             }
