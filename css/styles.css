@@ -357,3 +357,45 @@ i.ti-close {
   background-color: #009688;
   color: white;
 }
+.cfmodal {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+}
+
+.cfmodal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  text-align: center;
+}
+
+.cfmodal p {
+  margin-bottom: 20px;
+}
+
+.cfmodal button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
+.cfmodal button#confirmDeleteBtn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.cfmodal button#cancelDeleteBtn {
+  background-color: #3498db;
+  color: white;
+}
