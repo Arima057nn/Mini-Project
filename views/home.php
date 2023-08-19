@@ -8,8 +8,9 @@ if (!isset($_SESSION['user_success'])) {
     header('location:login.php');
 }
 $postController = new PostController($conn);
-$posts = $postController->getPosts("US0003");
+$posts = $postController->getPosts($_SESSION['user_success']);
 // var_dump($posts);
+// echo $_SESSION['user_success'];
 
 ?>
 
@@ -240,61 +241,61 @@ $posts = $postController->getPosts("US0003");
         }
     </script>
     <!-- Đoạn HTML modal confirm xóa -->
-<div id="deleteConfirmModal" class="cfmodal">
-    
-<div class="cfmodal-content">
-        <p>Are you sure you want to delete this post?</p>
-        <button id="confirmDeleteBtn">Delete</button>
-        <button id="cancelDeleteBtn">Cancel</button>
+    <div id="deleteConfirmModal" class="cfmodal">
+
+        <div class="cfmodal-content">
+            <p>Are you sure you want to delete this post?</p>
+            <button id="confirmDeleteBtn">Delete</button>
+            <button id="cancelDeleteBtn">Cancel</button>
+        </div>
+
     </div>
-    
-</div>
-<script>
-    const deleteBtns = document.querySelectorAll('.js-delete-post');
-    const deleteConfirmModal = document.getElementById('deleteConfirmModal');
-    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-    let postIdToDelete = null;
+    <script>
+        const deleteBtns = document.querySelectorAll('.js-delete-post');
+        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        let postIdToDelete = null;
 
-    function showDeleteConfirmModal(postId) {
-        postIdToDelete = postId;
-        deleteConfirmModal.style.display = 'flex';
-    }
-
-    function hideDeleteConfirmModal() {
-        postIdToDelete = null;
-        deleteConfirmModal.style.display = 'none';
-    }
-
-    function deletePost(postId) {
-        fetch(`../actions/delete_post.php?id=${postId}`, {
-                        method: 'DELETE'
-                    }).then(response => {
-                        response.json();
-                        const deletedRow = document.querySelector(`[data-post-id="${postId}"]`).closest('tr');
-                        deletedRow.remove();
-                    })
-                    .catch(error => console.error(error));
-        hideDeleteConfirmModal();
-    }
-    hideDeleteConfirmModal();
-    for (const deleteBtn of deleteBtns) {
-        deleteBtn.addEventListener('click', () => {
-            const postId = deleteBtn.getAttribute('data-post-id');
-            showDeleteConfirmModal(postId);
-        });
-    }
-    
-    confirmDeleteBtn.addEventListener('click', () => {
-        if (postIdToDelete) {
-            deletePost(postIdToDelete);
+        function showDeleteConfirmModal(postId) {
+            postIdToDelete = postId;
+            deleteConfirmModal.style.display = 'flex';
         }
-    });
 
-    cancelDeleteBtn.addEventListener('click', () => {
+        function hideDeleteConfirmModal() {
+            postIdToDelete = null;
+            deleteConfirmModal.style.display = 'none';
+        }
+
+        function deletePost(postId) {
+            fetch(`../actions/delete_post.php?id=${postId}`, {
+                    method: 'DELETE'
+                }).then(response => {
+                    response.json();
+                    const deletedRow = document.querySelector(`[data-post-id="${postId}"]`).closest('tr');
+                    deletedRow.remove();
+                })
+                .catch(error => console.error(error));
+            hideDeleteConfirmModal();
+        }
         hideDeleteConfirmModal();
-    });
-</script>
+        for (const deleteBtn of deleteBtns) {
+            deleteBtn.addEventListener('click', () => {
+                const postId = deleteBtn.getAttribute('data-post-id');
+                showDeleteConfirmModal(postId);
+            });
+        }
+
+        confirmDeleteBtn.addEventListener('click', () => {
+            if (postIdToDelete) {
+                deletePost(postIdToDelete);
+            }
+        });
+
+        cancelDeleteBtn.addEventListener('click', () => {
+            hideDeleteConfirmModal();
+        });
+    </script>
 
 
 </body>

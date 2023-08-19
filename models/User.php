@@ -44,6 +44,7 @@ class User extends DB
             // ham kiểm tra mật khẩu có khớp với mật khẩu đã hash hay không
             if (password_verify($password, $user['password'])) {
                 //dang nhap thanh cong
+                $_SESSION['user_success'] = $user['id'];
                 $this->setRembermeCookie($email, $password);
                 return true;
             } else return "mat khau khong chinh xac";
