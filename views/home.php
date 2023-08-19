@@ -51,13 +51,21 @@ $posts = $postController->getPosts("US0003");
                     <input type="text" class="modal-input" name="title" value="" placeholder="Enter Title...">
 
                     Level
-                    <input type="text" class="modal-input" name="level" value="" placeholder="Enter Level...">
+                    <select class="nodal-input" name="level">
+                        <option value="Sơ Cấp">Sơ Cấp</option>
+                        <option value="Trung Cấp">Trung Cấp</option>
+                        <option value="Cao Cấp">Cao Cấp</option>
+                    </select>
 
                     Experience
                     <input type="text" class="modal-input" name="experience" value="" placeholder="Enter Experience...">
 
                     Target
-                    <input type="text" class="modal-input" name="target" value="" placeholder="Enter Target...">
+                    <select class="nodal-input" name="target">
+                        <option value="Giao Tiếp">Giao Tiếp</option>
+                        <option value="Luyện Thi">Luyện Thi</option>
+                        <option value="Business">Business</option>
+                    </select>
 
                     Salary
                     <input type="text" class="modal-input" name="salary" value="" placeholder="Enter Salary...">
@@ -155,13 +163,21 @@ $posts = $postController->getPosts("US0003");
                                     <input type="text" class="nodal-input" name="title" value="<?= htmlentities($post['title']) ?>" placeholder="Enter Title...">
 
                                     Level
-                                    <input type="text" class="nodal-input" name="level" value="<?= htmlentities($post['level']) ?>" placeholder="Enter Level...">
+                                    <select class="nodal-input" name="level">
+                                        <option value="Sơ Cấp">Sơ Cấp</option>
+                                        <option value="Trung Cấp">Trung Cấp</option>
+                                        <option value="Cao Cấp">Cao Cấp</option>
+                                    </select>
 
                                     Experience
                                     <input type="text" class="nodal-input" name="experience" value="<?= htmlentities($post['experience']) ?>" placeholder="Enter Experience...">
 
                                     Target
-                                    <input type="text" class="nodal-input" name="target" value="<?= htmlentities($post['target']) ?>" placeholder="Enter Target...">
+                                    <select class="nodal-input" name="target">
+                                        <option value="Giao Tiếp">Giao Tiếp</option>
+                                        <option value="Luyện Thi">Luyện Thi</option>
+                                        <option value="Business">Business</option>
+                                    </select>
 
                                     Salary
                                     <input type="text" class="nodal-input" name="salary" value="<?= htmlentities($post['salary']) ?>" placeholder="Enter Salary...">
