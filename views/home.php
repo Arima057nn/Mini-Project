@@ -242,7 +242,7 @@ $posts = $postController->getPosts("US0003");
 
     function showDeleteConfirmModal(postId) {
         postIdToDelete = postId;
-        deleteConfirmModal.style.display = 'block';
+        deleteConfirmModal.style.display = 'flex';
     }
 
     function hideDeleteConfirmModal() {
@@ -261,14 +261,14 @@ $posts = $postController->getPosts("US0003");
                     .catch(error => console.error(error));
         hideDeleteConfirmModal();
     }
-
+    hideDeleteConfirmModal();
     for (const deleteBtn of deleteBtns) {
         deleteBtn.addEventListener('click', () => {
             const postId = deleteBtn.getAttribute('data-post-id');
             showDeleteConfirmModal(postId);
         });
     }
-
+    
     confirmDeleteBtn.addEventListener('click', () => {
         if (postIdToDelete) {
             deletePost(postIdToDelete);
