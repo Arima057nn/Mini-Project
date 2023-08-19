@@ -75,27 +75,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
 
-
-
     <div class="form-container">
         <form action="" method="POST">
             <h3>Login</h3>
 
+
+            <?php
+            if (isset($_COOKIE['msg'])) {
+            ?>
+                <div class="rror-msg">
+                    <strong>Danger!</strong> <?php echo $_COOKIE['msg']; ?>
+                </div>
+            <?php
+            }
+            ?>
             <input type="email" name="email" required placeholder="enter your email">
             <input type="password" name="password" required placeholder="enter your password">
             <input type="submit" name="submit" value="Login" class="form-btn" onclick="showToast()">
             <p>Don't have an account? <a href="register.php">Register now</a></p>
         </form>
     </div>
-    <script>
-        function showToast() {
-            var toast = document.getElementById("toast");
-            toast.style.display = "block";
-            setTimeout(function() {
-                toast.style.display = "none";
-            }, 3000); // Hide the toast after 3 seconds
-        }
-    </script>
+
 </body>
 
 </html>

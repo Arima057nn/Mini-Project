@@ -31,27 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="../css/styles.css">
-    <script>
-        function showSuccessMessage(message) {
-            var successMessage = document.getElementById("success-message");
-            successMessage.innerText = message;
-            successMessage.style.display = "block";
-
-            setTimeout(function() {
-                successMessage.style.display = "none";
-            }, 1000); // Hiển thị thông báo trong 1 giây (1000 ms)
-        }
-
-        function showErrorMessage(message) {
-            var successMessage = document.getElementById("error-message");
-            successMessage.innerText = message;
-            successMessage.style.display = "block";
-
-            setTimeout(function() {
-                successMessage.style.display = "none";
-            }, 1000); // Hiển thị thông báo trong 1 giây (1000 ms)
-        }
-    </script>
 
 </head>
 
@@ -59,12 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="form-container">
         <form action="" method="POST">
             <h3>Register</h3>
-            <div id="success-message" style="display: none; color: green;">
-                Đăng ký thành công!
-            </div>
-            <div id="error-message" style="display: none; color: red;">
-                Đăng ký that bai!
-            </div>
             <input type="text" name="name" required placeholder="enter your name">
             <input type="email" name="email" required placeholder="enter your email">
             <input type="password" name="password" required placeholder="enter your password">

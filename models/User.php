@@ -33,22 +33,28 @@ class User extends DB
 
     public function login($email, $password)
     {
-        // Lấy thông tin người dùng từ cơ sở dữ liệu dựa trên tên người dùng
-        $sql = "SELECT * FROM Users WHERE email = '$email'";
-        //truy van
-        $result = $this->conn->query($sql);
-        if ($result->num_rows === 1) {
-            //Lấy dữ liệu của người dùng từ đối tượng kết quả truy vấn và lưu trữ nó vào user
-            $user = $result->fetch_assoc();
+        try {
+            // Lấy thông tin người dùng từ cơ sở dữ liệu dựa trên tên người dùng
+            $sql = "SELECT * FROM Users WHERE email = '$email'";
+            //truy van
+            $result = $this->conn->query($sql);
+            if ($result->num_rows === 1) {
+                //Lấy dữ liệu của người dùng từ đối tượng kết quả truy vấn và lưu trữ nó vào user
+                $user = $result->fetch_assoc();
+                // ham kiểm tra mật khẩu có khớp với mật khẩu đã hash hay không
+                if (password_verify($password, $user['password'])) {
+                    //dang nhap thanh cong
+                    $_SESSION['user_success'] = $user['id'];
+                    $this->setRembermeCookie($email, $password);
+                    return true;
+                } else
+                    throw new Exception("mat khau khong chinh xac.");
+            } else throw new Exception("Email khong chinh xac."); // dang nhap that bai
 
-            // ham kiểm tra mật khẩu có khớp với mật khẩu đã hash hay không
-            if (password_verify($password, $user['password'])) {
-                //dang nhap thanh cong
-                $_SESSION['user_success'] = $user['id'];
-                $this->setRembermeCookie($email, $password);
-                return true;
-            } else return "mat khau khong chinh xac";
-        } else return "Email khong chinh xac"; // dang nhap that bai
+        } catch (Exception $e) {
+
+            return $e->getMessage(); // Trả về thông báo lỗi cho người dùng
+        }
     }
 
     public function logout()
