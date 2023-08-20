@@ -45,8 +45,9 @@ class User extends DB
                 if (password_verify($password, $user['password'])) {
                     //dang nhap thanh cong
                     $_SESSION['user_success'] = $user['id'];
+                    $_SESSION['username'] = $user['name'];
                     if ($remember === 1) {
-                        $tokenId = $this->createToken($user['id']);
+                        $tokenId = $this->createToken($user['id'], $user['name']);
                         $this->setRembermeCookie($tokenId);
                     }
                     return true;
@@ -93,6 +94,7 @@ class User extends DB
                 //Lấy dữ liệu của người dùng từ đối tượng kết quả truy vấn và lưu trữ nó vào user
                 $user = $result->fetch_assoc();
                 $_SESSION['user_success'] = $user['userId'];
+                $_SESSION['username'] = $user['name'];
                 $this->setRembermeCookie($tokenId);
                 header('location:home.php');
                 return true;
@@ -113,16 +115,16 @@ class User extends DB
         setcookie('remember_me', $tokenId, $cookieExpiration, '/');
     }
 
-    private function createToken($userId)
+    private function createToken($userId, $name)
     {
         try {
             $token = bin2hex(random_bytes(32));
-            $insert = "INSERT INTO Tokens (userId,tokenId) VALUES (?,?)";
+            $insert = "INSERT INTO Tokens (userId,name,tokenId) VALUES (?,?,?)";
             $stmt = $this->conn->prepare($insert);
             if (!$stmt) {
                 throw new Exception("Error preparing statement: " . $this->conn->error);
             }
-            $stmt->bind_param("ss", $userId, $token);
+            $stmt->bind_param("sss", $userId, $name, $token);
             $result = $stmt->execute();
             if ($result) {
                 if ($stmt->affected_rows > 0) {

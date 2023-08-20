@@ -30,8 +30,18 @@ $posts = $postController->getPosts($_SESSION['user_success']);
 </head>
 
 <body>
-    <h1 class="page-tittle">Job Searching</h1>
+    <div class="container-header">
+        <div class="header">
+            <p class="page-tittle">Vlearn</p>
+            <div class="info">
+                <div class="username">
+                    Hello, <?php echo $_SESSION['username'] ?> !
+                </div>
+                <a href="logout.php"><button class='btn-logout'>Log Out |-></button></a>
+            </div>
+        </div>
 
+    </div>
     <button class="js-buy-ticket create-btn">Create +</button>
     <div class="modal js-modal">
         <div class="modal-container js-modal-container">
@@ -49,34 +59,33 @@ $posts = $postController->getPosts($_SESSION['user_success']);
                     <input type="hidden" name="submitted" value="1">
 
                     Title
-                    <input type="text" class="modal-input" name="title" value="" placeholder="Enter Title...">
+                    <input required type="text" class="modal-input" name="title" value="" placeholder="Enter Title...">
 
                     Level
-                    <select class="nodal-input" name="level">
+                    <select required class="nodal-input" name="level">
                         <option value="Sơ Cấp">Sơ Cấp</option>
                         <option value="Trung Cấp">Trung Cấp</option>
                         <option value="Cao Cấp">Cao Cấp</option>
                     </select>
 
                     Experience
-                    <input type="text" class="modal-input" name="experience" value="" placeholder="Enter Experience...">
+                    <input required type="text" class="modal-input" name="experience" value="" placeholder="Enter Experience...">
 
                     Target
-                    <select class="nodal-input" name="target">
+                    <select required class="nodal-input" name="target">
                         <option value="Giao Tiếp">Giao Tiếp</option>
                         <option value="Luyện Thi">Luyện Thi</option>
                         <option value="Business">Business</option>
                     </select>
 
                     Salary
-                    <input type="text" class="modal-input" name="salary" value="" placeholder="Enter Salary...">
+                    <input required type="text" class="modal-input" name="salary" value="" placeholder="Enter Salary...">
 
                     Address
-                    <input type="text" class="modal-input" name="address" value="" placeholder="Enter Address...">
+                    <input required type="text" class="modal-input" name="address" value="" placeholder="Enter Address...">
 
                     Phone
-                    <input type="text" class="modal-input" name="phone" value="" placeholder="Enter Phone...">
-
+                    <input required type="text" class="modal-input" name="phone" value="" placeholder="Enter Phone...">
                     <button id="buy-tickets" type="submit">
                         Create Post <i class="fas fa-check"></i>
                     </button>
@@ -140,7 +149,7 @@ $posts = $postController->getPosts($_SESSION['user_success']);
                     <td class="tittle"><?php echo $post['address']; ?></td>
                     <td class="tittle"><?php echo $post['phone']; ?></td>
                     <td><button class="js-buy-ticket2 update-btn" data-postid="<?php echo $post['id']; ?>" id="<?php print $post['id']; ?>">Update</button> </td>
-                    <td> <button type="button" class="js-delete-post delete-btn" data-post-id="<?= $post['id'] ?>"><i class="ti-trash"></i> Delete</button> </td>
+                    <td> <button type="button" class="js-delete-post delete-btn" data-post-id="<?= $post['id'] ?>"><i class="fas fa-trash"></i> Delete</button> </td>
 
                     <div class="nodal js-nodal" id="nodal-<?php echo $post['id']; ?>">
                         <div class="nodal-container js-nodal-container">
@@ -150,15 +159,13 @@ $posts = $postController->getPosts($_SESSION['user_success']);
                                 </div>
 
                                 <header class="nodal-header">
-                                    Update Post
+                                    Update Post <?php echo $post['id'] ?>
                                 </header>
 
                                 <div class="nodal-body">
                                     <input type="hidden" name="submitted2" value="1">
                                     <input type="hidden" name="postId" value="<?= htmlentities($post['id']) ?>">
 
-                                    ID
-                                    <input type="text" class="nodal-input" name="title" value="<?= htmlentities($post['id']) ?>" placeholder="Enter Id..." readonly>
 
                                     Title
                                     <input type="text" class="nodal-input" name="title" value="<?= htmlentities($post['title']) ?>" placeholder="Enter Title...">
@@ -202,7 +209,7 @@ $posts = $postController->getPosts($_SESSION['user_success']);
 
         </table>
     </div>
-    <a href="logout.php"><button class='btn-logout'>Log Out |-></button></a>
+
 
     <script>
         const buyBtns2 = document.querySelectorAll('.js-buy-ticket2')

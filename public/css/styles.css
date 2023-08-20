@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merienda:wght@300;400;500;600;700;800;900&family=Poppins:ital,wght@0,100;0,200;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,6 +8,37 @@
   text-decoration: none;
   outline: none;
   border: none;
+}
+
+.container-header {
+  width: 100%;
+  height: 72px;
+  background-color: #5b9a8b;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+.header {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+}
+
+.username {
+  font-size: 26px;
+  color: white;
+  font-weight: 800;
+  font-family: "Merienda", cursive;
 }
 .page-title {
   font-size: 24px;
@@ -87,16 +119,12 @@
   font-size: 16px;
   background: #333;
   color: #fff;
-  margin: 0 5px;
   border-radius: 6px;
   text-transform: capitalize;
   cursor: pointer;
   flex-direction: column;
-  margin-right: 100px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  float: right;
   padding: 2px;
+  margin-left: 20px;
 }
 
 .btn-logout:hover {
@@ -307,23 +335,29 @@ i.ti-close {
   }
 }
 .create-btn {
-  background-color: #008CBA;
-  font-size: 16px;
+  background-color: #008cba;
+  font-size: 18px;
   border-radius: 6px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   margin-left: 100px;
   margin-top: 10px;
-  margin-bottom: 10px;
-  padding: 2px;
+  margin-bottom: 20px;
+  padding: 6px;
+}
+
+.page-tittle {
+  font-size: 46px;
+  font-weight: 800;
+  font-family: "Merienda", cursive;
 }
 .update-btn {
-  background-color: #FFD700;
+  background-color: #ffd700;
   font-size: 16px;
   border-radius: 6px;
   cursor: pointer;
-  padding: 2px;
+  padding: 4px;
 }
 
 .delete-btn {
@@ -331,7 +365,7 @@ i.ti-close {
   font-size: 16px;
   border-radius: 6px;
   cursor: pointer;
-  padding: 2px;
+  padding: 4px;
 }
 
 #books {
@@ -340,15 +374,20 @@ i.ti-close {
   width: 100%;
 }
 
-#books td, #books th {
+#books td,
+#books th {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
 }
 
-#books tr:nth-child(even){background-color: #f2f2f2;}
+#books tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
 
-#books tr:hover {background-color: #ddd;}
+#books tr:hover {
+  background-color: #ddd;
+}
 
 #books th {
   padding-top: 12px;
