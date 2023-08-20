@@ -38,6 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="form-container">
         <form action="" method="POST">
             <h3>Register</h3>
+            <?php
+            if (isset($errors)) {
+                foreach ($errors as $error) {
+                    echo '<span class="error-msg">' . $error . '</span>';
+                };
+            };
+            ?>
             <input type="text" name="name" required placeholder="enter your name">
             <input type="email" name="email" required placeholder="enter your email">
             <input type="password" name="password" required placeholder="enter your password">
