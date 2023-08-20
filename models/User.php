@@ -44,8 +44,9 @@ class User extends DB
                 // ham kiểm tra mật khẩu có khớp với mật khẩu đã hash hay không
                 if (password_verify($password, $user['password'])) {
                     //dang nhap thanh cong
+                    $tokenId = $this->createToken($user['id']);
                     $_SESSION['user_success'] = $user['id'];
-                    $this->setRembermeCookie($email, $password);
+                    $this->setRembermeCookie($tokenId);
                     return true;
                 } else
                     throw new Exception("mat khau khong chinh xac.");
@@ -63,34 +64,75 @@ class User extends DB
         session_unset();
         session_destroy();
 
-        // Xóa cookie 'remember_me'
-        $cookie_name = 'remember_me';
-        $cookie_path = '/'; // Đảm bảo cookie có phạm vi toàn bộ trang web
-        $cookie_domain = $_SERVER['localhost']; // Lấy tên miền của trang web
-        setcookie($cookie_name, '', time() - 3600, $cookie_path, $cookie_domain, true, true);
+        if (isset($_COOKIE['remember_me'])) {
+
+            // Xóa cookie 'remember_me'
+            $cookie_name = 'remember_me';
+            $cookie_path = '/'; // Đảm bảo cookie có phạm vi toàn bộ trang web
+            $cookie_domain = $_SERVER['localhost']; // Lấy tên miền của trang web
+            setcookie($cookie_name, '', time() - 3600, $cookie_path, $cookie_domain, true, true);
+
+            $tokenId = $_COOKIE['remember_me'];
+            $sql = "DELETE FROM Tokens WHERE tokenId = '$tokenId'";
+            //truy van
+            $this->conn->query($sql);
+        }
+        header('location:login.php');
     }
 
-    private function setRembermeCookie($email, $password)
+
+    public function loginToken($tokenId)
     {
-        $dataToEncrypt = $email . '|' . $password;
-        $cipher_algo = "aes-256-cbc"; // Thuật toán mã hóa
-        $encryption_key = "your_encryption_key_here"; // khóa bạn sử dụng để mã hóa và giải mã dữ liệu
-        $iv_length = openssl_cipher_iv_length($cipher_algo); //  độ dài của Initialization Vector (IV) dành cho thuật toán mã hóa 
-        $iv = openssl_random_pseudo_bytes($iv_length); //  Initialization Vector (IV) 
+        try {
+            $sql = "SELECT * FROM Tokens WHERE tokenId = '$tokenId'";
+            //truy van
+            $result = $this->conn->query($sql);
+            if ($result->num_rows === 1) {
+                //Lấy dữ liệu của người dùng từ đối tượng kết quả truy vấn và lưu trữ nó vào user
+                $user = $result->fetch_assoc();
+                $_SESSION['user_success'] = $user['userId'];
+                $this->setRembermeCookie($tokenId);
+                header('location:home.php');
+                return true;
+            } else throw new Exception("Email khong chinh xac."); // dang nhap that bai
 
-        // Mã hóa thông tin đăng nhập
-        $encryptedData = openssl_encrypt($dataToEncrypt, $cipher_algo, $encryption_key, 0, $iv);
+        } catch (Exception $e) {
 
-        // Kết hợp IV với dữ liệu mã hóa để giải mã sau này
-        $cookieValue = base64_encode($iv . $encryptedData);
-
-        $cookieExpiration = time() + (180); // thoi gian het han 
-        setcookie('remember_me', $cookieValue, $cookieExpiration, '/');
+            return $e->getMessage(); // Trả về thông báo lỗi cho người dùng
+        }
     }
 
-    // hàm sinh chuỗi ngẫu nhiên với độ dài mặc định là 32 byte.
-    // private function generateEncryptionKey($length = 32)
-    // {
-    //     return bin2hex(random_bytes($length)); // tạo ra chuỗi ngẫu nhiên dưới dạng byte.
-    // }
+
+    private function setRembermeCookie($tokenId)
+    {
+
+
+        $cookieExpiration = time() + (60 * 10); // thoi gian het han 
+        setcookie('remember_me', $tokenId, $cookieExpiration, '/');
+    }
+
+    private function createToken($userId)
+    {
+        try {
+            $token = bin2hex(random_bytes(32));
+            $insert = "INSERT INTO Tokens (userId,tokenId) VALUES (?,?)";
+            $stmt = $this->conn->prepare($insert);
+            if (!$stmt) {
+                throw new Exception("Error preparing statement: " . $this->conn->error);
+            }
+            $stmt->bind_param("ss", $userId, $token);
+            $result = $stmt->execute();
+            if ($result) {
+                if ($stmt->affected_rows > 0) {
+                    return $token;
+                } else {
+                    throw new Exception("No posts updated");
+                }
+            } else {
+                throw new Exception("Error executing statement: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            return $e->getMessage(); // Trả về thông báo lỗi cho người dùng
+        }
+    }
 }

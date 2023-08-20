@@ -26,4 +26,9 @@ class AuthController
     {
         $this->userModel->logout();
     }
+
+    public function loginByToken($tokenId)
+    {
+        $this->userModel->loginToken($tokenId);
+    }
 }
