@@ -2,10 +2,10 @@
 
 class DB
 {
-    private $host = "localhost";  // db4free.net
-    private $user = "root"; // sbooks
-    private $password = "uchihaSARADA97@"; // books123
-    private $database = "Books"; // books123
+    private $host = "db4free.net";  // db4free.net
+    private $user = "sbooks"; // sbooks
+    private $password = "books123"; // books123
+    private $database = "sbooks"; // books123
     protected $conn;
 
     public function __construct()
