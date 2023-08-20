@@ -16,9 +16,9 @@ class AuthController
         return $this->userModel->register($name, $email, $password, $cpassword);
     }
 
-    public function loginUser($email, $password)
+    public function loginUser($email, $password, $remember)
     {
-        return $this->userModel->login($email, $password);
+        return $this->userModel->login($email, $password, $remember);
     }
 
 

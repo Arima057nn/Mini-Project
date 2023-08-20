@@ -31,7 +31,7 @@ class User extends DB
         }
     }
 
-    public function login($email, $password)
+    public function login($email, $password, $remember)
     {
         try {
             // Lấy thông tin người dùng từ cơ sở dữ liệu dựa trên tên người dùng
@@ -44,9 +44,11 @@ class User extends DB
                 // ham kiểm tra mật khẩu có khớp với mật khẩu đã hash hay không
                 if (password_verify($password, $user['password'])) {
                     //dang nhap thanh cong
-                    $tokenId = $this->createToken($user['id']);
                     $_SESSION['user_success'] = $user['id'];
-                    $this->setRembermeCookie($tokenId);
+                    if ($remember === 1) {
+                        $tokenId = $this->createToken($user['id']);
+                        $this->setRembermeCookie($tokenId);
+                    }
                     return true;
                 } else
                     throw new Exception("mat khau khong chinh xac.");

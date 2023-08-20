@@ -24,7 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Tạo đối tượng AuthController và gọi phương thức đăng ký
     $authController = new AuthController($conn);
-    $result = $authController->loginUser($email, $password);
+
+    if (!empty($_POST['remember_me'])) {
+        $result = $authController->loginUser($email, $password, 1);
+    } else {
+        $result = $authController->loginUser($email, $password, 0);
+    }
     if ($result === true) {
         header('location:home.php');
         exit;
@@ -44,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../public/css/styles.css">
 
 </head>
 
@@ -53,8 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="form-container">
         <form action="" method="POST">
             <h3>Login</h3>
-
-
             <?php
             if (isset($error)) {
                 echo '<span class="error-msg">' . $error . '</span>';
@@ -62,7 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ?>
             <input type="email" name="email" required placeholder="enter your email">
             <input type="password" name="password" required placeholder="enter your password">
-            <input type="submit" name="submit" value="Login" class="form-btn" onclick="showToast()">
+            <div style="width: 100%; display: flex; justify-content: flex-start;flex-direction: row;align-items: center;">
+                <input type="checkbox" id="remember_me" name="remember_me" style="width: 28px;margin: 8px;"> Remember me
+            </div>
+            <input type="submit" name="submit" value="Login" class="form-btn">
             <p>Don't have an account? <a href="register.php">Register now</a></p>
         </form>
     </div>
