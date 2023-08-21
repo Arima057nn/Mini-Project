@@ -13,15 +13,15 @@ class User extends DB
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             if ($find->num_rows > 0) {
-                throw new Exception("Tai khoan da ton tai");
+                throw new Exception("Account already existed");
             } else {
                 if ($password != $cpassword) {
-                    throw new Exception("password not matched!");
+                    throw new Exception("Password isn't matched!");
                 } else {
                     $insert = "INSERT INTO Users(name, email, password) VALUES ('$name', '$email', '$hashedPassword')";
                     $result = $this->conn->query($insert);
                     if (!$result) {
-                        throw new Exception("Đã xảy ra lỗi khi đăng ký người dùng.");
+                        throw new Exception("Error occurs when registering new user");
                     }
                     return true;
                 }
@@ -52,8 +52,8 @@ class User extends DB
                     }
                     return true;
                 } else
-                    throw new Exception("mat khau khong chinh xac.");
-            } else throw new Exception("Email khong chinh xac."); // dang nhap that bai
+                    throw new Exception("Password isn't correct");
+            } else throw new Exception("Email isn't correct"); // dang nhap that bai
 
         } catch (Exception $e) {
 
@@ -98,7 +98,7 @@ class User extends DB
                 $this->setRembermeCookie($tokenId);
                 header('location:home.php');
                 return true;
-            } else throw new Exception("Email khong chinh xac."); // dang nhap that bai
+            } else throw new Exception("Email isn't correct"); // dang nhap that bai
 
         } catch (Exception $e) {
 
