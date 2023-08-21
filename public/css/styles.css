@@ -438,3 +438,9 @@ i.ti-close {
   background-color: #3498db;
   color: white;
 }
+.error-msg {
+  display: none;
+  color: crimson;
+  font-size: 15px;
+  margin-top: -24px;
+}

@@ -8,7 +8,8 @@ if (!isset($_SESSION['user_success'])) {
 $postController = new PostController($conn);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['submitted']) && $_POST['submitted'] == 1 && preg_match("/^[0-9]{10}$/", trim($_POST['phone'])) && strlen(trim($_POST['phone'])) == 10) {
+    if (isset($_POST['submitted']) && $_POST['submitted'] == 1 && preg_match("/^[0-9]{10}$/", trim($_POST['phone'])) && strlen(trim($_POST['phone'])) == 10
+    && preg_match("/^\d+$/", trim($_POST['salary'])) && preg_match("/^\d+$/", trim($_POST['experience']))) {
         $title = trim($_POST['title']);
         $level = trim($_POST['level']);
         $experience = trim($_POST['experience']);

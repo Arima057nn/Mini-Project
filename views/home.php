@@ -68,8 +68,11 @@ $posts = $postController->getPosts($_SESSION['user_success']);
                         <option value="Cao Cấp">Cao Cấp</option>
                     </select>
 
-                    Experience
-                    <input required type="text" class="modal-input" name="experience" value="" placeholder="Enter Experience...">
+                    <div class="input-container">
+                        <label for="experience">Experience</label>
+                        <input required type="text" class="modal-input" name="experience" value="" placeholder="Enter Experience...">
+                        <div class="error-msg"></div>
+                    </div>
 
                     Target
                     <select required class="nodal-input" name="target">
@@ -78,14 +81,19 @@ $posts = $postController->getPosts($_SESSION['user_success']);
                         <option value="Business">Business</option>
                     </select>
 
-                    Salary
-                    <input required type="text" class="modal-input" name="salary" value="" placeholder="Enter Salary...">
-
+                    <div class="input-container">
+                        <label for="salary">Salary</label>
+                        <input required type="text" class="modal-input" name="salary" value="" placeholder="Enter Salary...">
+                        <div class="error-msg"></div>
+                    </div>
                     Address
                     <input required type="text" class="modal-input" name="address" value="" placeholder="Enter Address...">
 
-                    Phone
-                    <input required type="text" class="modal-input" name="phone" value="" placeholder="Enter Phone...">
+                    <div class="input-container">
+                        <label for="phone">Phone</label>
+                        <input required type="text" class="modal-input" name="phone" value="" placeholder="Enter Phone...">
+                        <div class="error-msg"></div>
+                    </div>
                     <button id="buy-tickets" type="submit">
                         Create Post <i class="fas fa-check"></i>
                     </button>
@@ -123,6 +131,64 @@ $posts = $postController->getPosts($_SESSION['user_success']);
         modalContainer.addEventListener('click', function(event) {
             event.stopPropagation();
         });
+
+        const createPostForm = document.querySelector('.js-modal-container form');
+
+        createPostForm.addEventListener('submit', function(event) {
+            const phoneInput = createPostForm.querySelector('[name="phone"]');
+            const experienceInput = createPostForm.querySelector('[name="experience"]');
+            const salaryInput = createPostForm.querySelector('[name="salary"]');
+
+            const phoneValue = phoneInput.value.trim();
+            const experienceValue = experienceInput.value.trim();
+            const salaryValue = salaryInput.value.trim();
+
+            let isValid = true;
+
+            if (!isValidPhoneNumber(phoneValue)) {
+                event.preventDefault();
+                showFieldError(phoneInput, 'Invalid phone number.');
+                isValid = false;
+            }
+
+            if (!isValidNumber(experienceValue)) {
+                event.preventDefault();
+                showFieldError(experienceInput, 'Experience must be a valid number.');
+                isValid = false;
+            }
+
+            if (!isValidNumber(salaryValue)) {
+                event.preventDefault();
+                showFieldError(salaryInput, 'Salary must be a valid number.');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+
+        function isValidPhoneNumber(phone) {
+            return /^\d{10}$/.test(phone);
+        }
+
+        function isValidNumber(value) {
+            return !isNaN(value) && value !== '';
+        }
+
+        function showFieldError(inputElement, errorMessage) {
+            const parentContainer = inputElement.closest('.input-container');
+            const errorElement = parentContainer.querySelector('.error-msg');
+            errorElement.textContent = errorMessage;
+            errorElement.style.display = 'block';
+        }
+
+        function clearFieldError(inputElement) {
+            const parentContainer = inputElement.closest('.input-container');
+            const errorElement = parentContainer.querySelector('.error-msg');
+            errorElement.textContent = '';
+            errorElement.style.display = 'none';
+        }
     </script>
     <div class="index">
         <table id="books">
@@ -166,7 +232,6 @@ $posts = $postController->getPosts($_SESSION['user_success']);
                                     <input type="hidden" name="submitted2" value="1">
                                     <input type="hidden" name="postId" value="<?= htmlentities($post['id']) ?>">
 
-
                                     Title
                                     <input type="text" class="nodal-input" name="title" value="<?= htmlentities($post['title']) ?>" placeholder="Enter Title...">
 
@@ -177,8 +242,11 @@ $posts = $postController->getPosts($_SESSION['user_success']);
                                         <option value="Cao Cấp">Cao Cấp</option>
                                     </select>
 
-                                    Experience
-                                    <input type="text" class="nodal-input" name="experience" value="<?= htmlentities($post['experience']) ?>" placeholder="Enter Experience...">
+                                    <div class="input-container">
+                                        <label for="experience">Experience</label>
+                                        <input required type="text" class="nodal-input" name="experience" value="<?= htmlentities($post['experience']) ?>" placeholder="Enter Experience...">
+                                        <div class="error-msg"></div>
+                                    </div>
 
                                     Target
                                     <select class="nodal-input" name="target">
@@ -187,14 +255,20 @@ $posts = $postController->getPosts($_SESSION['user_success']);
                                         <option value="Business">Business</option>
                                     </select>
 
-                                    Salary
-                                    <input type="text" class="nodal-input" name="salary" value="<?= htmlentities($post['salary']) ?>" placeholder="Enter Salary...">
+                                    <div class="input-container">
+                                        <label for="salary">Salary</label>
+                                        <input required type="text" class="nodal-input" name="salary" value="<?= htmlentities($post['salary']) ?>" placeholder="Enter Salary...">
+                                        <div class="error-msg"></div>
+                                    </div>
 
                                     Address
                                     <input type="text" class="nodal-input" name="address" value="<?= htmlentities($post['address']) ?>" placeholder="Enter Address...">
 
-                                    Phone
-                                    <input type="text" class="nodal-input" name="phone" value="<?= htmlentities($post['phone']) ?>" placeholder="Enter Phone...">
+                                    <div class="input-container">
+                                        <label for="phone">Phone</label>
+                                        <input required type="text" class="nodal-input" name="phone" value="<?= htmlentities($post['phone']) ?>" placeholder="Enter Phone...">
+                                        <div class="error-msg"></div>
+                                    </div>
 
                                     <button id="buy-tickets" type="submit">
                                         Update Post <i class="fas-check"></i>
@@ -245,6 +319,63 @@ $posts = $postController->getPosts($_SESSION['user_success']);
             nodalClose.addEventListener('click', () => {
                 nodalClose.closest('.js-nodal').classList.remove('open');
             });
+        }
+        const updatePostForm = document.querySelector('.js-nodal-container');
+
+        updatePostForm.addEventListener('submit', function(event) {
+            const phoneInput = updatePostForm.querySelector('[name="phone"]');
+            const experienceInput = updatePostForm.querySelector('[name="experience"]');
+            const salaryInput = updatePostForm.querySelector('[name="salary"]');
+
+            const phoneValue = phoneInput.value.trim();
+            const experienceValue = experienceInput.value.trim();
+            const salaryValue = salaryInput.value.trim();
+
+            let isValid = true;
+
+            if (!isValidPhoneNumber(phoneValue)) {
+                event.preventDefault();
+                showFieldError(phoneInput, 'Invalid phone number.');
+                isValid = false;
+            }
+
+            if (!isValidNumber(experienceValue)) {
+                event.preventDefault();
+                showFieldError(experienceInput, 'Experience must be a valid number.');
+                isValid = false;
+            }
+
+            if (!isValidNumber(salaryValue)) {
+                event.preventDefault();
+                showFieldError(salaryInput, 'Salary must be a valid number.');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+
+        function isValidPhoneNumber(phone) {
+            return /^\d{10}$/.test(phone);
+        }
+
+        function isValidNumber(value) {
+            return !isNaN(value) && value !== '';
+        }
+
+        function showFieldError(inputElement, errorMessage) {
+            const parentContainer = inputElement.closest('.input-container');
+            const errorElement = parentContainer.querySelector('.error-msg');
+            errorElement.textContent = errorMessage;
+            errorElement.style.display = 'block';
+        }
+
+        function clearFieldError(inputElement) {
+            const parentContainer = inputElement.closest('.input-container');
+            const errorElement = parentContainer.querySelector('.error-msg');
+            errorElement.textContent = '';
+            errorElement.style.display = 'none';
         }
     </script>
     <!-- Đoạn HTML modal confirm xóa -->

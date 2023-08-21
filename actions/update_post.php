@@ -8,7 +8,8 @@ if (!isset($_SESSION['user_success'])) {
 $postController = new PostController($conn);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['submitted2']) && $_POST['submitted2'] == 1 && preg_match("/^[0-9]{10}$/", trim($_POST['phone'])) && strlen(trim($_POST['phone'])) == 10) {
+    if (isset($_POST['submitted2']) && $_POST['submitted2'] == 1 && preg_match("/^[0-9]{10}$/", trim($_POST['phone'])) && strlen(trim($_POST['phone'])) == 10
+    && preg_match("/^\d+$/", trim($_POST['salary'])) && preg_match("/^\d+$/", trim($_POST['experience']))) {
         $id = trim($_POST['postId']); // Đặt tên biến tùy theo tên bạn đã đặt trong form
         $title = trim($_POST['title']);
         $level = trim($_POST['level']);
