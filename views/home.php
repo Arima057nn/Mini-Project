@@ -59,7 +59,7 @@ $posts = $postController->getPosts($_SESSION['user_success']);
                     <input type="hidden" name="submitted" value="1">
 
                     Title
-                    <input required type="text" class="modal-input" name="title" value="" placeholder="Enter Title...">
+                    <input required type="text" class="modal-input" name="title" value="<?= @ htmlentities($post['title']) ?>" placeholder="Enter Title...">
 
                     Level
                     <select required class="nodal-input" name="level">
@@ -70,7 +70,7 @@ $posts = $postController->getPosts($_SESSION['user_success']);
 
                     <div class="input-container">
                         <label for="experience">Experience</label>
-                        <input required type="text" class="modal-input" name="experience" value="" placeholder="Enter Experience...">
+                        <input required type="text" class="modal-input" name="experience" value="<?= @ htmlentities($post['experience']) ?>" placeholder="Enter Experience...">
                         <div class="error-msg"></div>
                     </div>
 
@@ -83,15 +83,15 @@ $posts = $postController->getPosts($_SESSION['user_success']);
 
                     <div class="input-container">
                         <label for="salary">Salary</label>
-                        <input required type="text" class="modal-input" name="salary" value="" placeholder="Enter Salary...">
+                        <input required type="text" class="modal-input" name="salary" value="<?= @ htmlentities($post['salary']) ?>" placeholder="Enter Salary...">
                         <div class="error-msg"></div>
                     </div>
                     Address
-                    <input required type="text" class="modal-input" name="address" value="" placeholder="Enter Address...">
+                    <input required type="text" class="modal-input" name="address" value="<?= @ htmlentities($post['address']) ?>" placeholder="Enter Address...">
 
                     <div class="input-container">
                         <label for="phone">Phone</label>
-                        <input required type="text" class="modal-input" name="phone" value="" placeholder="Enter Phone...">
+                        <input required type="text" class="modal-input" name="phone" value="<?= @ htmlentities($post['phone']) ?>" placeholder="Enter Phone...">
                         <div class="error-msg"></div>
                     </div>
                     <button id="buy-tickets" type="submit">
@@ -206,14 +206,14 @@ $posts = $postController->getPosts($_SESSION['user_success']);
             </tr>
             <?php foreach ($posts as $post) { ?>
                 <tr>
-                    <td class="tittle"><?php echo $post['id']; ?></td>
-                    <td class="tittle"><?php echo $post['title']; ?></td>
-                    <td class="tittle"><?php echo $post['level']; ?></td>
-                    <td class="tittle"><?php echo $post['experience']; ?></td>
-                    <td class="tittle"><?php echo $post['target']; ?></td>
-                    <td class="tittle"><?php echo $post['salary']; ?></td>
-                    <td class="tittle"><?php echo $post['address']; ?></td>
-                    <td class="tittle"><?php echo $post['phone']; ?></td>
+                    <td class="tittle"><?php echo htmlentities($post['id']); ?></td>
+                    <td class="tittle"><?php echo htmlentities($post['title']); ?></td>
+                    <td class="tittle"><?php echo htmlentities($post['level']); ?></td>
+                    <td class="tittle"><?php echo htmlentities($post['experience']); ?></td>
+                    <td class="tittle"><?php echo htmlentities($post['target']); ?></td>
+                    <td class="tittle"><?php echo htmlentities($post['salary']); ?></td>
+                    <td class="tittle"><?php echo htmlentities($post['address']); ?></td>
+                    <td class="tittle"><?php echo htmlentities($post['phone']); ?></td>
                     <td><button class="js-buy-ticket2 update-btn" data-postid="<?php echo $post['id']; ?>" id="<?php print $post['id']; ?>">Update</button> </td>
                     <td> <button type="button" class="js-delete-post delete-btn" data-post-id="<?= $post['id'] ?>"><i class="fas fa-trash"></i> Delete</button> </td>
 
