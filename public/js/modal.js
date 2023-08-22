@@ -201,7 +201,7 @@ export function deleteFormScript() {
         postIdToDelete = null;
         deleteConfirmModal.style.display = 'none';
     }
-
+    hideDeleteConfirmModal();
     function deletePost(postId) {
         fetch(`../actions/delete_post.php?id=${postId}`, {
                 method: 'DELETE'
@@ -213,7 +213,6 @@ export function deleteFormScript() {
             .catch(error => console.error(error));
         hideDeleteConfirmModal();
     }
-    hideDeleteConfirmModal();
     for (const deleteBtn of deleteBtns) {
         deleteBtn.addEventListener('click', () => {
             const postId = deleteBtn.getAttribute('data-post-id');

@@ -397,7 +397,6 @@ i.ti-close {
   color: white;
 }
 .cfmodal {
-  display: flex;
   position: fixed;
   top: 0;
   left: 0;
