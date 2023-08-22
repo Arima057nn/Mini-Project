@@ -8,22 +8,17 @@ class Post extends DB
         try {
             $select = "SELECT * FROM Posts WHERE userId = ?";
             $stmt = $this->conn->prepare($select);
-            $stmt->bind_param("s", $userId);
-            $stmt->execute();
+            $stmt->execute([$userId]);
 
-            $result = $stmt->get_result();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if ($result->num_rows > 0) {
-                $posts = array();
-                while ($row = $result->fetch_assoc()) {
-                    $posts[] = $row;
-                }
-                return $posts;
+            if (count($result) > 0) {
+                return $result;
             } else {
                 throw new Exception("No posts found for this user");
             }
         } catch (Exception $e) {
-            return $e->getMessage(); // Trả về thông báo lỗi cho người dùng
+            return $e->getMessage();
         }
     }
 
@@ -32,39 +27,34 @@ class Post extends DB
         try {
             $insert = "INSERT INTO Posts (userId, title, level, experience, target, salary, address, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($insert);
-
-            if (!$stmt) {
-                throw new Exception("Error preparing statement: " . $this->conn->error);
-            }
-
-            $stmt->bind_param("sssisiss", $userId, $title, $level, $experience, $target, $salary, $address, $phone);
-            $result = $stmt->execute();
+            $result = $stmt->execute([$userId, $title, $level, $experience, $target, $salary, $address, $phone]);
 
             if ($result) {
-                if ($stmt->affected_rows > 0) {
+                if ($stmt->rowCount() > 0) {
                     return true;
                 } else {
                     throw new Exception("No posts updated {$title} {$level} -{$userId}-");
                 }
             } else {
-                throw new Exception("Error executing statement: " . $stmt->error);
+                throw new Exception("Error executing statement: " . $stmt->errorInfo()[2]);
             }
         } catch (Exception $e) {
-            return $e->getMessage(); // Trả về thông báo lỗi cho người dùng
-
+            return $e->getMessage();
         }
     }
+
+    // ... Remaining methods here ...
 
     public function updatePostByUser($title, $level, $experience, $target, $salary, $address, $phone, $id)
     {
         try {
-            $update = "UPDATE Posts SET title = ?, level = ?, experience = ?,target = ?, salary =?, address =?, phone =? WHERE id = ?";
+            $update = "UPDATE Posts SET title = ?, level = ?, experience = ?, target = ?, salary = ?, address = ?, phone = ? WHERE id = ?";
             $stmt = $this->conn->prepare($update);
-            $stmt->bind_param("ssisisss", $title, $level, $experience, $target, $salary, $address, $phone, $id); // "si" cho dữ liệu kiểu string và integer
-            $stmt->execute();
+
+            $result = $stmt->execute([$title, $level, $experience, $target, $salary, $address, $phone, $id]);
 
             // Kiểm tra số hàng bị ảnh hưởng sau cập nhật
-            if ($stmt->affected_rows > 0) {
+            if ($stmt->rowCount() > 0) {
                 return true; // Trả về true nếu cập nhật thành công
             } else {
                 // throw new Exception("No posts updated" . $title);
@@ -78,14 +68,13 @@ class Post extends DB
     public function deletePost(string $id) {
         $sql = "DELETE FROM Posts WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param('s', $id);
         try {
-            $stmt->execute();
+            $stmt->execute([$id]);
             print('<p>Post was deleted successfully.</p>');
             header("Location: http://localhost/Mini-Project/views/home.php");
             die();
-        } catch (mysqli_sql_exception $e) {
+        } catch (PDOException $e) {
             print('<p>Error with database: ' . $e->getMessage() . '</p>');
         }
-    }
+    }    
 }

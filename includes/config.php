@@ -10,9 +10,11 @@ class DB
 
     public function __construct()
     {
-        $this->conn = new mysqli($this->host, $this->user, $this->password, $this->database);
-        if ($this->conn->connect_error) {
-            die("Connection failed: " . $this->conn->connect_error);
+        try {
+            $this->conn = new PDO("mysql:host=$this->host;dbname=$this->database", $this->user, $this->password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Connection failed: " . $e->getMessage());
         }
     }
 }

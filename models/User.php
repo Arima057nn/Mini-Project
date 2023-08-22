@@ -6,20 +6,22 @@ class User extends DB
     public function register($name, $email, $password, $cpassword)
     {
         try {
-            $select = "SELECT * FROM Users WHERE email = '$email'";
-            $find = $this->conn->query($select);
+            $select = "SELECT * FROM Users WHERE email = ?";
+            $stmt = $this->conn->prepare($select);
+            $stmt->execute([$email]);
 
             // Hash mật khẩu trước khi lưu vào cơ sở dữ liệu
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            if ($find->num_rows > 0) {
+            if ($stmt->rowCount() > 0) {
                 throw new Exception("Account already existed");
             } else {
                 if ($password != $cpassword) {
                     throw new Exception("Password isn't matched!");
                 } else {
-                    $insert = "INSERT INTO Users(name, email, password) VALUES ('$name', '$email', '$hashedPassword')";
-                    $result = $this->conn->query($insert);
+                    $insert = "INSERT INTO Users(name, email, password) VALUES (?, ?, ?)";
+                    $stmt = $this->conn->prepare($insert);
+                    $result = $stmt->execute([$name, $email, $hashedPassword]);
                     if (!$result) {
                         throw new Exception("Error occurs when registering new user");
                     }
@@ -27,36 +29,43 @@ class User extends DB
                 }
             }
         } catch (Exception $e) {
-            return $e->getMessage(); // Trả về thông báo lỗi cho người dùng
+            return $e->getMessage();
         }
     }
+
+    // ... Remaining methods here ...
 
     public function login($email, $password, $remember)
     {
         try {
-            // Lấy thông tin người dùng từ cơ sở dữ liệu dựa trên tên người dùng
-            $sql = "SELECT * FROM Users WHERE email = '$email'";
-            //truy van
-            $result = $this->conn->query($sql);
-            if ($result->num_rows === 1) {
-                //Lấy dữ liệu của người dùng từ đối tượng kết quả truy vấn và lưu trữ nó vào user
-                $user = $result->fetch_assoc();
-                // ham kiểm tra mật khẩu có khớp với mật khẩu đã hash hay không
+            // Sử dụng prepared statement để tránh sự cố bảo mật SQL injection
+            $sql = "SELECT * FROM Users WHERE email = :email";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+
+            if ($stmt->rowCount() === 1) {
+                // Lấy dữ liệu của người dùng từ kết quả truy vấn và lưu trữ nó vào biến user
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                
                 if (password_verify($password, $user['password'])) {
-                    //dang nhap thanh cong
+                    // Đăng nhập thành công
                     $_SESSION['user_success'] = $user['id'];
                     $_SESSION['username'] = $user['name'];
+                    
                     if ($remember === 1) {
                         $tokenId = $this->createToken($user['id'], $user['name']);
-                        $this->setRembermeCookie($tokenId);
+                        $this->setRememberMeCookie($tokenId);
                     }
+                    
                     return true;
-                } else
+                } else {
                     throw new Exception("Password isn't correct");
-            } else throw new Exception("Email isn't correct"); // dang nhap that bai
-
+                }
+            } else {
+                throw new Exception("Email isn't correct");
+            }
         } catch (Exception $e) {
-
             return $e->getMessage(); // Trả về thông báo lỗi cho người dùng
         }
     }
@@ -68,7 +77,6 @@ class User extends DB
         session_destroy();
 
         if (isset($_COOKIE['remember_me'])) {
-
             // Xóa cookie 'remember_me'
             $cookie_name = 'remember_me';
             $cookie_path = '/'; // Đảm bảo cookie có phạm vi toàn bộ trang web
@@ -76,41 +84,41 @@ class User extends DB
             setcookie($cookie_name, '', time() - 3600, $cookie_path, $cookie_domain, true, true);
 
             $tokenId = $_COOKIE['remember_me'];
-            $sql = "DELETE FROM Tokens WHERE tokenId = '$tokenId'";
-            //truy van
-            $this->conn->query($sql);
+            $sql = "DELETE FROM Tokens WHERE tokenId = :tokenId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':tokenId', $tokenId, PDO::PARAM_STR);
+            $stmt->execute();
         }
-        header('location:login.php');
+        
+        header('location: login.php');
     }
-
 
     public function loginToken($tokenId)
     {
         try {
-            $sql = "SELECT * FROM Tokens WHERE tokenId = '$tokenId'";
-            //truy van
-            $result = $this->conn->query($sql);
-            if ($result->num_rows === 1) {
-                //Lấy dữ liệu của người dùng từ đối tượng kết quả truy vấn và lưu trữ nó vào user
-                $user = $result->fetch_assoc();
+            $sql = "SELECT * FROM Tokens WHERE tokenId = :tokenId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':tokenId', $tokenId, PDO::PARAM_STR);
+            $stmt->execute();
+
+            if ($stmt->rowCount() === 1) {
+                // Lấy dữ liệu của người dùng từ kết quả truy vấn và lưu trữ nó vào biến user
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 $_SESSION['user_success'] = $user['userId'];
                 $_SESSION['username'] = $user['name'];
-                $this->setRembermeCookie($tokenId);
-                header('location:home.php');
+                $this->setRememberMeCookie($tokenId);
+                header('location: home.php');
                 return true;
-            } else throw new Exception("Email isn't correct"); // dang nhap that bai
-
+            } else {
+                throw new Exception("Email isn't correct");
+            }
         } catch (Exception $e) {
-
             return $e->getMessage(); // Trả về thông báo lỗi cho người dùng
         }
     }
 
-
-    private function setRembermeCookie($tokenId)
+    private function setRememberMeCookie($tokenId)
     {
-
-
         $cookieExpiration = time() + (60 * 10); // thoi gian het han 
         setcookie('remember_me', $tokenId, $cookieExpiration, '/');
     }
@@ -119,21 +127,23 @@ class User extends DB
     {
         try {
             $token = bin2hex(random_bytes(32));
-            $insert = "INSERT INTO Tokens (userId,name,tokenId) VALUES (?,?,?)";
+            $insert = "INSERT INTO Tokens (userId, name, tokenId) VALUES (?, ?, ?)";
             $stmt = $this->conn->prepare($insert);
+
             if (!$stmt) {
-                throw new Exception("Error preparing statement: " . $this->conn->error);
+                throw new Exception("Error preparing statement: " . $this->conn->errorInfo()[2]);
             }
-            $stmt->bind_param("sss", $userId, $name, $token);
-            $result = $stmt->execute();
+
+            $result = $stmt->execute([$userId, $name, $token]);
+
             if ($result) {
-                if ($stmt->affected_rows > 0) {
+                if ($stmt->rowCount() > 0) {
                     return $token;
                 } else {
-                    throw new Exception("No posts updated");
+                    throw new Exception("No rows inserted");
                 }
             } else {
-                throw new Exception("Error executing statement: " . $stmt->error);
+                throw new Exception("Error executing statement: " . $stmt->errorInfo()[2]);
             }
         } catch (Exception $e) {
             return $e->getMessage(); // Trả về thông báo lỗi cho người dùng
