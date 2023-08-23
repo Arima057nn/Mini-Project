@@ -205,8 +205,7 @@ $posts = $postController->getPosts($_SESSION['user_success']);
 
 
     <!-- Đoạn HTML modal confirm xóa -->
-    <div id="deleteConfirmModal" class="cfmodal">
-
+    <div id="deleteConfirmModal" class="cfmodal" style="display: none;">
         <div class="cfmodal-content">
             <p>Are you sure you want to delete this post?</p>
             <button id="confirmDeleteBtn">Delete</button>
